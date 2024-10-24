@@ -1,11 +1,17 @@
 package com.javaweb.course.entity;
 
 import com.javaweb.course.enums.AuthProvider;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@AllArgsConstructor
+@Data
 @Entity
 @Table(name = "user")
 public class User {
@@ -14,13 +20,10 @@ public class User {
     private Integer id;
 
     @Column(name = "username",nullable = false, length = 50, unique = true)
-    private String userName;
-
-    @Column(name = "email",length = 50, unique = true)
-    private String email;
+    private String username;
 
     @Column(name = "password",length = 64)
-    private String passWord;
+    private String password;
 
     private boolean status;
 
@@ -29,9 +32,9 @@ public class User {
     public User() {
     }
 
-    public User(String email, String passWord) {
-        this.email = email;
-        this.passWord = passWord;
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -40,90 +43,16 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-
     private Set<Role> roles = new HashSet<>();
-    // getters and setters are not shown for brevity
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return passWord;
-    }
-
-    public void setPassword(String password) {
-        this.passWord = passWord;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST},mappedBy = "user")
+    private Student student;
 
     @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
+    private AuthProvider authProvider;
 
-    public AuthProvider getProvider() {
-        return provider;
-    }
+    private Date create_at;
+    private Date update_at;
 
-    public void setProvider(AuthProvider provider) {
-        this.provider = provider;
-    }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public boolean isEnable() {
-        return status;
-    }
-
-    public void setEnable(boolean enable) {
-        this.status = enable;
-    }
-
-    public String getSub() {
-        return sub;
-    }
-
-    public void setSub(String sub) {
-        this.sub = sub;
-    }
 }

@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/")
 public class LoginAPI {
 
-//    @GetMapping
-//    public String login(){
-//
-//    }
+    @GetMapping
+    public String login(){
+        return "login";
+    }
+
+    @GetMapping("login")
+    public String dangnhap(){
+        return "login";
+    }
 }

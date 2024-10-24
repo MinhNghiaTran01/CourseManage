@@ -1,9 +1,12 @@
-package com.javaweb.course.controller.web;
+package com.javaweb.course.service.impl;
 
 import com.javaweb.course.model.dto.MyUserDetails;
-import com.javaweb.course.model.dto.AuthDTO;
+import com.javaweb.course.model.dto.UserDTO;
 import com.javaweb.course.model.respone.AuthResponse;
 import com.javaweb.course.security.jwt.JwtTokenUtil;
+import com.javaweb.course.service.AuthService;
+import com.javaweb.course.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,28 +14,34 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
+@Service
+public class AuthServiceImpl implements AuthService {
 
-@RestController
-public class AuthApi {
-    @Autowired AuthenticationManager authManager;
-    @Autowired JwtTokenUtil jwtUtil;
+    @Autowired
+    AuthenticationManager authManager;
 
-    @PostMapping("/auth/login")
-    public ResponseEntity<?> login(@RequestBody @Valid AuthDTO request) {
+    @Autowired
+    JwtTokenUtil jwtUtil;
+
+    @Autowired
+    ModelMapper modelMapper;
+
+    @Override
+    public ResponseEntity<?> resolveLogin(UserDTO userDTO) {
         try {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getEmail(), request.getPassword())
+                            userDTO.getUsername(), userDTO.getPassword())
             );
 
             MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
-            String accessToken = jwtUtil.generateAccessToken(myUserDetails);
-            AuthResponse response = new AuthResponse(myUserDetails.getUser().getEmail(), accessToken);
+
+            userDTO = modelMapper.map(myUserDetails.getUser(),UserDTO.class);
+
+            String accessToken = jwtUtil.generateAccessToken(userDTO);
+            AuthResponse response = new AuthResponse(userDTO.getUsername(), accessToken);
 
             return ResponseEntity.ok().body(response);
 

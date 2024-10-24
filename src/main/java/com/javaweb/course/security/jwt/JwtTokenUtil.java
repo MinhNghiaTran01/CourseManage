@@ -2,6 +2,7 @@ package com.javaweb.course.security.jwt;
 
 
 import com.javaweb.course.model.dto.MyUserDetails;
+import com.javaweb.course.model.dto.UserDTO;
 import io.jsonwebtoken.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,10 +18,10 @@ public class JwtTokenUtil {
     @Value("${app.jwt.secret}")
     private String SECRET_KEY;
 
-    public String generateAccessToken(MyUserDetails myUserDetails) {
+    public String generateAccessToken(UserDTO userDTO) {
         return Jwts.builder()
-                .setSubject(String.format("%s,%s", myUserDetails.getUser().getId(), myUserDetails.getUser().getEmail()))
-                .setIssuer("CodeJava")
+                .setSubject(String.format("%s,%s", userDTO.getId(), userDTO.getUsername()))
+                .setIssuer("Course_Manager")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)

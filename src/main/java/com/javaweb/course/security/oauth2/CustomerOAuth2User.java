@@ -11,11 +11,11 @@ import java.util.*;
 public class CustomerOAuth2User implements OAuth2User {
 
     private OAuth2User oauth2User;
-    private User user;
+    private String oauth2ClientName;
 
-    public CustomerOAuth2User(OAuth2User oauth2User) {
+    public CustomerOAuth2User(OAuth2User oauth2User, String oauth2ClientName) {
         this.oauth2User = oauth2User;
-//        this.user = user;
+        this.oauth2ClientName = oauth2ClientName;
     }
 
     @Override
@@ -25,7 +25,11 @@ public class CustomerOAuth2User implements OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return oauth2User.getAuthorities();
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        oauth2User.getAuthorities().forEach(ga -> authorities.add(ga));
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        return authorities;
     }
 
     @Override
@@ -49,11 +53,7 @@ public class CustomerOAuth2User implements OAuth2User {
         this.oauth2User = oauth2User;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public String getOauth2ClientName() {
+        return this.oauth2ClientName;
     }
 }

@@ -5,8 +5,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+@Data
 @Entity
 @Table(name = "products")
 public class Product {
@@ -19,16 +21,6 @@ public class Product {
 
     private float price;
 
-    // getters and setters are not shown for brevity
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public @NotNull @Length(min = 5, max = 128) String getName() {
         return name;
     }
@@ -37,11 +29,4 @@ public class Product {
         this.name = name;
     }
 
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
 }
