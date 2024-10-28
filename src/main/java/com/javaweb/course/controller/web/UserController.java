@@ -5,9 +5,8 @@ import com.javaweb.course.entity.User;
 import com.javaweb.course.repository.UserRepository;
 import com.javaweb.course.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/user")
@@ -25,6 +24,11 @@ public class UserController {
         student.setUser(user);
         user.setStudent(student);
         userRepository.save(user);
+        return "hello";
+    }
+
+    @PostMapping(value = "/upload")
+    public String solveUpload(@RequestParam("file") MultipartFile file) {
         return "hello";
     }
 }
