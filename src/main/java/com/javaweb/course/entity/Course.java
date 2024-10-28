@@ -11,7 +11,8 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class course {
+@Table(name = "course")
+public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +29,11 @@ public class course {
 
     private State state;
 
-    @Column(name = "category_id")
-    private String categoryId;
-
     @Column(name = "created_at")
     private Long createdAt;
 
     @Column(name="updated_at")
     private Long updatedAt;
+
+
 }

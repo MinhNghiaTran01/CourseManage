@@ -12,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Table(name = "lesson")
 public class Lesson {
 
     @Id
@@ -19,7 +20,7 @@ public class Lesson {
     private UUID id;
 
     @Column(name = "course_id")
-    private String courseId;
+    private Integer courseId;
 
     private String description;
 
@@ -30,6 +31,8 @@ public class Lesson {
     private String videoUrl;
 
     private State state;
+
+    private String duration;
 
     @Column(name = "created_at")
     private Long createdAt;
