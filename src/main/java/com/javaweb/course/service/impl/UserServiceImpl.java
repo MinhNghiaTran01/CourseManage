@@ -75,6 +75,21 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public boolean resgisterAccountGoogle(UserDTO userDTO) {
+        User user = modelMapper.map(userDTO, User.class);
+        user.setAuthProvider(AuthProvider.LOCAL);
+        user.setRoles(generateRole());
+        try {
+            User savedUser = userRepository.save(user);
+            return savedUser != null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
     @Override
     public UserDTO getUserByUserName(String username) {
         try {
@@ -85,6 +100,18 @@ public class UserServiceImpl implements UserService {
         catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public boolean checkRegisterd(UserDTO userDTO) {
+
+        User user = userRepository.findByUsername(userDTO.getUsername());
+        if (user == null) {
+            return false;
+        }
+        else{
+            return true;
         }
     }
 

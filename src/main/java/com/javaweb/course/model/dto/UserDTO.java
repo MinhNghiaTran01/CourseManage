@@ -15,4 +15,6 @@ public class UserDTO {
 
     @NotNull
     private String password;
+
+    private String sub;
 }

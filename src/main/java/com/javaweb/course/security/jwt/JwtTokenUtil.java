@@ -2,6 +2,7 @@ package com.javaweb.course.security.jwt;
 
 
 import com.javaweb.course.model.dto.MyUserDetails;
+import com.javaweb.course.model.dto.ProfileDTO;
 import com.javaweb.course.model.dto.UserDTO;
 import io.jsonwebtoken.*;
 import org.apache.log4j.Logger;
@@ -57,5 +58,15 @@ public class JwtTokenUtil {
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public String generateAccessTokenByGoogle(ProfileDTO profileDTO) {
+        return Jwts.builder()
+                .setSubject(String.format("%s,%s", profileDTO.getId(), profileDTO.getEmail()))
+                .setIssuer("Course_Manager")
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .compact();
     }
 }

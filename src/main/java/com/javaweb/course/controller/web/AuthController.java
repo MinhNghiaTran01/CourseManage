@@ -2,12 +2,14 @@ package com.javaweb.course.controller.web;
 
 import com.javaweb.course.model.dto.MyUserDetails;
 import com.javaweb.course.model.dto.AuthDTO;
+import com.javaweb.course.model.dto.ProfileDTO;
 import com.javaweb.course.model.dto.UserDTO;
 import com.javaweb.course.model.respone.AuthResponse;
 import com.javaweb.course.security.jwt.JwtTokenUtil;
 import com.javaweb.course.service.AuthService;
 import com.javaweb.course.service.UserService;
 import com.javaweb.course.service.impl.AuthServiceImpl;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@RequestMapping("/auth")
+@RequestMapping("/user/auth")
 @RestController
 public class AuthController {
 
@@ -30,11 +32,35 @@ public class AuthController {
     AuthService authService;
     @Autowired JwtTokenUtil jwtUtil;
     @Autowired UserService userService;
-
+    @Autowired
+    ModelMapper modelMapper;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid UserDTO userDTO) {
         return authService.resolveLogin(userDTO);
+    }
+
+    @PostMapping("/google-login")
+    public ResponseEntity<?> googleLogin(@RequestBody ProfileDTO profileDTO) {
+        try {
+            if(profileDTO!=null){
+                UserDTO userDTO = new UserDTO();
+                userDTO.setUsername(profileDTO.getEmail());
+                userDTO.setSub(profileDTO.getId());
+                boolean isRegisterd = userService.checkRegisterd(userDTO);
+
+                if(!isRegisterd) {
+                    userService.resgisterAccountGoogle(userDTO);
+                }
+                userDTO = userService.getUserByUserName(userDTO.getUsername());
+                String accessToken = jwtUtil.generateAccessToken(userDTO);
+                AuthResponse response = new AuthResponse(userDTO.getUsername(), accessToken);
+                return ResponseEntity.ok().body(response);
+            }
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Registration Account Google failed");
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @PostMapping("/register")

@@ -16,12 +16,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
 
 
 @Configuration
@@ -71,28 +73,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.cors().and().csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http = http.authorizeRequests()
-                .antMatchers("/","/auth/login","/oauth/**","/user","/login","/auth/register").permitAll()
+                .antMatchers("/","/user/auth/login","/oauth/**"
+                                ,"/user","/login","/auth/register","/user/auth/google-login","/user/upload","/user/file-upload").permitAll()
                 .antMatchers("/products").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
                 .antMatchers("/admin/manageProduct").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated().and();
 
         // login with form
-        http
-            .formLogin().permitAll()
-            .loginPage("/login")
-            .usernameParameter("username")
-            .passwordParameter("password")
-            .and()
-            .oauth2Login()
-            .loginPage("/login")
-            .userInfoEndpoint()
-            .userService(oauth2UserService)
-            .and()
-            .successHandler(oAuth2AuthenticationSuccessHandler);
+//        http
+//            .formLogin().permitAll()
+//            .loginPage("/login")
+//            .usernameParameter("username")
+//            .passwordParameter("password")
+//            .and()
+//            .oauth2Login()
+//            .loginPage("/login")
+//            .userInfoEndpoint()
+//            .userService(oauth2UserService)
+//            .and()
+//            .successHandler(oAuth2AuthenticationSuccessHandler);
 
         // Set unauthorized requests exception handler
 //        http = http
@@ -116,18 +119,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
-
 }

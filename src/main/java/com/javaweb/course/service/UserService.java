@@ -12,4 +12,8 @@ public interface UserService {
     public boolean userRegister(@Valid UserDTO userDTO);
 
     @Valid UserDTO getUserByUserName(String username);
+
+    public boolean resgisterAccountGoogle(UserDTO userDTO);
+
+    public boolean checkRegisterd(UserDTO userDTO);
 }
