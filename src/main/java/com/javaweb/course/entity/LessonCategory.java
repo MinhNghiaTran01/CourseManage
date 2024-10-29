@@ -1,5 +1,6 @@
 package com.javaweb.course.entity;
 
+import com.javaweb.course.entity.type.State;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,10 +15,14 @@ public class LessonCategory {
     private Integer id;
 
     @Column(name = "course_id")
-    private String courseId;
+    private Integer courseId;
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
+    private State state;
 
     @Column(name = "created_at")
     private Long createdAt;

@@ -16,7 +16,11 @@ public class LessonDto {
 
     private Integer courseId;
 
-    public LessonDto(Integer courseId, String duration, String description) {
+    private Integer lessonCategoryId;
+
+    public LessonDto(Integer courseId,Integer lessonCategoryId,String lessonName, String duration, String description) {
+        this.lessonCategoryId = lessonCategoryId;
+        this.lessonName = lessonName;
         this.courseId = courseId;
         this.duration = duration;
         this.description = description;

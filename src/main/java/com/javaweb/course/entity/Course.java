@@ -27,6 +27,8 @@ public class Course {
 
     private Long price;
 
+    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
     private State state;
 
     @Column(name = "created_at")
