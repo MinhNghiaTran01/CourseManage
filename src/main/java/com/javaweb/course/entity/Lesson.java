@@ -22,6 +22,9 @@ public class Lesson {
     @Column(name = "course_id")
     private Integer courseId;
 
+    @Column(name = "lesson_category_id")
+    private Integer lessonCategoryId;
+
     private String description;
 
     @Column(name = "lesson_name")
@@ -30,6 +33,8 @@ public class Lesson {
     @Column(name = "video_url")
     private String videoUrl;
 
+    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
     private State state;
 
     private String duration;

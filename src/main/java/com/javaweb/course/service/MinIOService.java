@@ -7,7 +7,7 @@ import java.io.InputStream;
 
 public interface MinIOService {
 
-    public void uploadFile(LessonDto lessonDto, MultipartFile file);
+    public void uploadFile(String objectName, LessonDto lessonDto, MultipartFile file);
 
     public InputStream getVideo(String videoName) ;
 }

@@ -39,6 +39,7 @@ public class CourseServiceImpl implements CourseService {
             course.setDescription(courseDto.getDescription());
             course.setPrice(courseDto.getPrice());
             course.setState(courseDto.getState());
+            course.setUpdatedAt(Helper.getNowMillisAtUtc());
             courseRepository.save(course);
         }
     }
