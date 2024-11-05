@@ -2,7 +2,7 @@ package com.javaweb.course.controller.admin;
 
 import com.javaweb.course.model.dto.CourseDto;
 import com.javaweb.course.model.respone.CourseResponse;
-import com.javaweb.course.service.impl.CourseServiceImpl;
+import com.javaweb.course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,33 +13,33 @@ import java.util.List;
 public class CourseAdminController {
 
     @Autowired
-    CourseServiceImpl courseServiceImpl;
+    CourseService courseService;
 
     @GetMapping("")
     public List<CourseResponse> findALl() {
-        return courseServiceImpl.findAll();
+        return courseService.findAll();
     }
 
     @PostMapping("")
-    public Boolean save(CourseDto courseDto) {
-        courseServiceImpl.save(courseDto);
+    public Boolean save(@RequestBody CourseDto courseDto) {
+        courseService.save(courseDto);
         return true;
     }
 
     @PutMapping("{id}")
-    public Boolean update(@PathVariable(value = "id") Integer id, CourseDto courseDto) {
-        courseServiceImpl.update(id, courseDto);
+    public Boolean update(@PathVariable(value = "id") Integer id, @RequestBody CourseDto courseDto) {
+        courseService.update(id, courseDto);
         return true;
     }
 
     @DeleteMapping("{id}")
     public Boolean delete(@PathVariable(value = "id") Integer id) {
-        courseServiceImpl.delete(id);
+        courseService.delete(id);
         return true;
     }
 
     @GetMapping("{id}")
     public CourseResponse findById(@PathVariable(value = "id") Integer id) {
-        return courseServiceImpl.findById(id);
+        return courseService.findById(id);
     }
 }

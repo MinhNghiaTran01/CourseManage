@@ -61,11 +61,11 @@ public class LessonServiceImpl implements LessonService {
   @Transactional(rollbackFor = Exception.class)
   public void save(LessonDto lessonDto, MultipartFile file) {
     Course course = courseRepository.findById(lessonDto.getCourseId()).orElse(null);
-    if (!Objects.isNull(course)) {
+    if (Objects.isNull(course)) {
       throw new RuntimeException(String.format("course has id: %s not found", lessonDto.getCourseId()));
     }
     LessonCategory lessonCategory = lessonCategoryRepository.findById(lessonDto.getLessonCategoryId()).orElse(null);
-    if (!Objects.isNull(lessonCategory)) {
+    if (Objects.isNull(lessonCategory)) {
       throw new RuntimeException(String.format("lessonCategory has id: %s not found", lessonDto.getLessonCategoryId()));
     }
 
@@ -79,7 +79,7 @@ public class LessonServiceImpl implements LessonService {
     lesson.setDuration(lessonDto.getDuration());
     lesson.setState(State.ACTIVE);
     lesson.setCreatedAt(Helper.getNowMillisAtUtc());
-    lesson.setCreatedAt(Helper.getNowMillisAtUtc());
+    lesson.setUpdatedAt(Helper.getNowMillisAtUtc());
 
     lessonRepository.save(lesson);
 

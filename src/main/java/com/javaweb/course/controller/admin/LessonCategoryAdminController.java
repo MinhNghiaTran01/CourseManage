@@ -20,12 +20,12 @@ public class LessonCategoryAdminController {
   }
 
   @PostMapping("")
-  public Boolean save(LessonCategoryDto lessonCategoryDto) {
+  public Boolean save(@RequestBody LessonCategoryDto lessonCategoryDto) {
     lessonCategoryService.save(lessonCategoryDto);
     return true;
   }
 
-  @PutMapping("{id}")
+  @PatchMapping("{id}")
   public Boolean update(@PathVariable("id") Integer id, LessonCategoryDto lessonCategoryDto) {
     lessonCategoryService.update(id, lessonCategoryDto);
     return true;

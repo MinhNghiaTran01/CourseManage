@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class LessonCategoryDto {
 
+  private Integer id;
+
   private Integer courseId;
 
   private String name;

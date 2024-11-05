@@ -1,11 +1,14 @@
 package com.javaweb.course.service.impl;
 
+import com.javaweb.course.entity.Course;
 import com.javaweb.course.entity.Lesson;
 import com.javaweb.course.entity.LessonCategory;
 import com.javaweb.course.entity.type.State;
 import com.javaweb.course.model.dto.LessonCategoryDto;
 import com.javaweb.course.model.respone.LessonCategoryResponse;
+import com.javaweb.course.repository.CourseRepository;
 import com.javaweb.course.repository.LessonCategoryRepository;
+import com.javaweb.course.service.CourseService;
 import com.javaweb.course.service.LessonCategoryService;
 import com.javaweb.course.untils.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +23,15 @@ public class LessonCategoryServiceImpl implements LessonCategoryService {
   @Autowired
   private LessonCategoryRepository lessonCategoryRepository;
 
+  @Autowired
+  private CourseRepository courseRepository;
+
   @Override
   public void save(LessonCategoryDto lessonCategoryDto) {
+    Course course = courseRepository.findById(lessonCategoryDto.getCourseId()).orElse(null);
+    if(Objects.isNull(course)){
+      throw new RuntimeException(String.format("course id: %s is null",lessonCategoryDto.getCourseId()));
+    }
     LessonCategory lessonCategory = new LessonCategory();
     lessonCategory.setName(lessonCategoryDto.getName());
     lessonCategory.setCourseId(lessonCategoryDto.getCourseId());
@@ -34,7 +44,7 @@ public class LessonCategoryServiceImpl implements LessonCategoryService {
 
   @Override
   public void update(Integer id, LessonCategoryDto lessonCategoryDto) {
-    LessonCategory lessonCategory = lessonCategoryRepository.findById(id).orElse(null);
+    LessonCategory lessonCategory = lessonCategoryRepository.findById(lessonCategoryDto.getId()).orElse(null);
     if (lessonCategory != null) {
       lessonCategory.setName(lessonCategoryDto.getName());
       lessonCategory.setState(lessonCategoryDto.getState());

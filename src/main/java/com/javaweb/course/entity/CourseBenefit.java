@@ -12,14 +12,14 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class CourseSuggest {
+public class CourseBenefit {
 
     @Id
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "course_id")
+    private Integer courseId;
 
-    @Column(name = "category_suggest")
-    private String categorySuggest;
+    @Column(name = "benefits", columnDefinition = "TEXT")
+    private String benefits;
 
     @Column(name = "created_at")
     private Long createdAt;

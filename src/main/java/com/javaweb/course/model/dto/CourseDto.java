@@ -3,6 +3,8 @@ package com.javaweb.course.model.dto;
 import com.javaweb.course.entity.type.State;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class CourseDto {
 
@@ -15,4 +17,6 @@ public class CourseDto {
     private Long price;
 
     private State state;
+
+    List<String> benefits;
 }
