@@ -1,0 +1,30 @@
+package com.javaweb.course.model.dto;
+
+import com.javaweb.course.enums.State;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class CourseDto {
+
+//     thêm id để update
+    private Integer id;
+
+    private String code;
+
+    private String courseName;
+
+    private String description;
+
+    private Long price;
+
+    private State state;
+
+    private MultipartFile fileImage;
+
+    private byte[] image;
+}

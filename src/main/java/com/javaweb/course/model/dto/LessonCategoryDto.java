@@ -1,0 +1,17 @@
+package com.javaweb.course.model.dto;
+
+import com.javaweb.course.enums.State;
+import lombok.Data;
+
+@Data
+public class LessonCategoryDto {
+
+//   thêm thuộc tính id
+  private Integer id;
+
+  private Integer courseId;
+
+  private String name;
+
+  private State state;
+}
