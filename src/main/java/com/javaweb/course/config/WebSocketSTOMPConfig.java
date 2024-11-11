@@ -12,7 +12,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
+//        tiền tố topic để gửi thông điệp từ server về client
         config.enableSimpleBroker("/topic");
+//        tiền tố app để client gui đến server
         config.setApplicationDestinationPrefixes("/app");
     }
 
