@@ -29,32 +29,12 @@ public class GoogleDriveController {
         return googleDriveService.getWebViewLink(fileId);
     }
 
-//    @GetMapping("/add-permission")
-//    public ResponseEntity<?> addPermission(@RequestParam String fileId,
-//                                @RequestParam String email,
-//                                @RequestParam String role) {
-//        return googleDriveService.addPermission(fileId,)
-//        try {
-//            addPermissionToDriveFile(fileId, email, role);
-//            return "Permission added successfully to file ID: " + fileId;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "Failed to add permission: " + e.getMessage();
-//        }
-//    }
-
-//    private void addPermissionToDriveFile(String fileId, String email, String role) throws IOException {
-//        Permission permission = new Permission();
-//        permission.setType("user");
-//        permission.setRole(role); // Role: reader, writer, or owner
-//        permission.setEmailAddress(email);
-//
-//        // Thực hiện gán quyền với Drive API
-//        driveService.permissions().create(fileId, permission)
-//                .setSendNotificationEmail(true) // Notify the user by email
-//                .execute();
-//    }
-
+    @GetMapping("/add-permission")
+    public ResponseEntity<?> addPermission(@RequestParam String fileId,
+                                @RequestParam String email,
+                                @RequestParam String role) {
+        return googleDriveService.addPermission(fileId,email,role);
+    }
 
     @PostMapping("/create-folder")
     public ResponseEntity<?> createFolder(@RequestParam String folderName, @RequestParam(required = false) String parentFolderId) {

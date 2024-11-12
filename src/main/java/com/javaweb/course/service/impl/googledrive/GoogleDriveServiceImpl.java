@@ -1,6 +1,7 @@
 package com.javaweb.course.service.impl.googledrive;
 
 import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.Permission;
 import com.javaweb.course.entity.Course;
 import com.javaweb.course.repository.CourseRepository;
 import com.javaweb.course.service.GoogleDriveService;
@@ -72,6 +73,25 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to get webViewLink: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> addPermission(String fileId, String email, String role) {
+        try {
+            Permission permission = new Permission();
+            permission.setType("user");
+            permission.setRole(role); // Role: reader, writer, or owner
+            permission.setEmailAddress(email);
+
+            // Thực hiện gán quyền với Drive API
+            driveService.permissions().create(fileId, permission)
+                    .setSendNotificationEmail(true) // Notify the user by email
+                    .execute();
+            return ResponseEntity.status(HttpStatus.CREATED).body("Permission added successfully to file ID: " + fileId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Failed to add permission: " + e.getMessage());
         }
     }
 }

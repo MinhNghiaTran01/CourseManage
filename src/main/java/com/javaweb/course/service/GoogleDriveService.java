@@ -7,4 +7,6 @@ public interface GoogleDriveService {
     ResponseEntity<?> createNewFolder(String folderName, String parentFolderId);
 
     ResponseEntity<?> getWebViewLink(String fileId);
+
+    ResponseEntity<?> addPermission(String fileId, String email, String role);
 }
