@@ -6,7 +6,6 @@ import com.javaweb.course.model.dto.UserDTO;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 
 public interface UserService {
@@ -14,7 +13,7 @@ public interface UserService {
 
     public boolean userRegister(@Valid UserDTO userDTO);
 
-    public @Valid UserDTO getUserByUserName(String username);
+    public User getUserByUserName(String username);
 
     public boolean resgisterAccountGoogle(UserDTO userDTO);
 
@@ -34,5 +33,5 @@ public interface UserService {
 
     void delete(User user);
 
-    Optional<User> findById(Integer id);
+    User findById(Integer id);
 }

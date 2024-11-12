@@ -15,5 +15,7 @@ public class StudentResponse {
     private String description;
     private Integer totalCourseRegistered;
     private Integer totalAmountPaid;
-
+    private String facebook;
+    private String linkedin;
+    private String github;
 }

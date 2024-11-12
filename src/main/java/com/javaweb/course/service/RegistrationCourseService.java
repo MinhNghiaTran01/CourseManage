@@ -14,4 +14,6 @@ public interface RegistrationCourseService {
     RegistrationCourse findById(Integer id);
 
     RegistrationCourse findByCourseIdAndUserId(Integer courseId, Integer userId);
+
+    List<RegistrationCourse> findByUserId(Integer userId);
 }

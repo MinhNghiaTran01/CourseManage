@@ -20,6 +20,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false, unique = true)
     private String code;
 
     @Column(name = "course_name")
@@ -43,6 +44,7 @@ public class Course {
     @Lob
     private byte[] image;
 
+    private String folderId;
     //   Thêm phần registrationCourses
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RegistrationCourse> registrationCourses = new HashSet<>();

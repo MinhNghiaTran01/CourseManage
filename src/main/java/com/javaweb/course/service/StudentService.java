@@ -11,5 +11,5 @@ public interface StudentService {
 
     void update(Student student);
 
-    Optional<Student> findById(Integer id);
+    Student findById(Integer id);
 }

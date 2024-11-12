@@ -3,7 +3,6 @@ package com.javaweb.course.service.impl;
 import com.javaweb.course.entity.Role;
 import com.javaweb.course.entity.User;
 import com.javaweb.course.enums.AuthProvider;
-import com.javaweb.course.model.dto.InfoDetailUserDTO;
 import com.javaweb.course.model.dto.UserDTO;
 import com.javaweb.course.repository.RoleRepository;
 import com.javaweb.course.repository.UserRepository;
@@ -12,11 +11,10 @@ import com.javaweb.course.service.UserService;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
+import javax.validation.Valid;
 import java.util.*;
 
 @Service
@@ -93,11 +91,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDTO getUserByUserName(String username) {
+    public User getUserByUserName(String username) {
         try {
             User user = userRepository.findByUsername(username);
-            UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-            return userDTO;
+            return user;
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -155,7 +152,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findById(Integer id) {
-        return userRepository.findById(id);
+    public User findById(Integer id) {
+        return userRepository.findById(id).orElse(null);
     }
 }

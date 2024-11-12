@@ -3,7 +3,6 @@ package com.javaweb.course.service.impl;
 import com.javaweb.course.entity.Role;
 import com.javaweb.course.repository.RoleRepository;
 import com.javaweb.course.service.RoleService;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -11,7 +11,6 @@ public interface CourseService extends BaseService<Course, CourseDto, CourseResp
 
     void updateAndImage(CourseDto courseDto) throws IOException;
 
-
     List<CourseResponse> findAll();
 
     List<Course> findByCourseNameLikeIgnoreCase(String courseName);

@@ -1,10 +1,16 @@
 package com.javaweb.course.controller.admin;
 
+import com.javaweb.course.model.dto.CourseBenefitDTO;
 import com.javaweb.course.model.dto.CourseDto;
 import com.javaweb.course.model.respone.CourseResponse;
+import com.javaweb.course.service.CourseBenefitService;
+import com.javaweb.course.service.impl.CourseBenefitServiceImpl;
 import com.javaweb.course.service.impl.CourseServiceImpl;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -15,17 +21,14 @@ import java.util.List;
 public class CourseAdminController {
 
     @Autowired
-    CourseServiceImpl courseServiceImpl;
+    private CourseServiceImpl courseServiceImpl;
+
+    @Autowired
+    private CourseBenefitService courseBenefitService;
 
     @GetMapping("")
     public List<CourseResponse> findALl() {
         return courseServiceImpl.findAll();
-    }
-
-    @PostMapping
-    public Boolean save(@RequestBody CourseDto courseDto) {
-        courseServiceImpl.save(courseDto);
-        return true;
     }
 
     @PutMapping("{id}")
@@ -49,10 +52,23 @@ public class CourseAdminController {
     }
 
     // Thêm cac phương thức bổ sung trường private MultipartFile fileImage
-    @PostMapping(value = "/s2", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Boolean saveAndImage(@ModelAttribute CourseDto courseDto) throws IOException {
-        courseServiceImpl.saveAndImage(courseDto);
-        return true;
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> save(@ModelAttribute CourseDto courseDto) throws IOException {
+        Boolean checkSaveCourse = courseServiceImpl.saveAndImage(courseDto);
+        CourseBenefitDTO courseBenefitDTO = CourseBenefitDTO.builder()
+                .benefits(courseDto.getBenefits())
+                .codeCourse(courseDto.getCode())
+                .build();
+        Boolean checkSaveCourseBenefit = courseBenefitService.save(courseBenefitDTO);
+        if(!checkSaveCourse){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lưu khóa học thất bại");
+        }
+        else if(!checkSaveCourseBenefit){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Lưu lợi ích khóa học thất bại");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.CREATED).body("Đã tạo khóa học thành công");
+        }
     }
 
     // Thêm cac phương thức bổ sung trường private byte[] image;

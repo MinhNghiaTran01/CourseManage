@@ -67,17 +67,32 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @SneakyThrows
-    public void saveAndImage(CourseDto courseDto) {
-        Course course = new Course();
-        course.setCourseName(courseDto.getCourseName());
-        course.setDescription(courseDto.getDescription());
-        course.setPrice(courseDto.getPrice());
-        course.setState(courseDto.getState());
-        course.setCreatedAt(Helper.getNowMillisAtUtc());
-        course.setUpdatedAt(Helper.getNowMillisAtUtc());
-        course.setImage(courseDto.getFileImage().getBytes());
-        courseRepository.save(course);
+    public Boolean saveAndImage(CourseDto courseDto) {
+        // Tạo một thực thể Course mới và gán dữ liệu từ DTO
+        try {
+            Course course = new Course();
+            course.setCode(courseDto.getCode());
+            course.setCourseName(courseDto.getCourseName());
+            course.setDescription(courseDto.getDescription());
+            course.setPrice(courseDto.getPrice());
+            course.setState(courseDto.getState());
+            course.setFolderId(courseDto.getFolderId());
+            course.setCreatedAt(Helper.getNowMillisAtUtc());
+            course.setUpdatedAt(Helper.getNowMillisAtUtc());
+            if (courseDto.getFileImage() != null) {
+                course.setImage(courseDto.getFileImage().getBytes());
+            }
+            courseRepository.save(course);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
+
+
+
 
     @Override
     public void updateAndImage(CourseDto courseDto) throws IOException {

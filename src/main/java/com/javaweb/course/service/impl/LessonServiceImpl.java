@@ -11,7 +11,6 @@ import com.javaweb.course.repository.CourseRepository;
 import com.javaweb.course.repository.LessonCategoryRepository;
 import com.javaweb.course.repository.LessonRepository;
 import com.javaweb.course.service.LessonService;
-import com.javaweb.course.service.MinIOService;
 import com.javaweb.course.untils.Helper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,7 @@ public class LessonServiceImpl implements LessonService {
     @Autowired
     private LessonRepository lessonRepository;
 
-    @Autowired
-    private MinIOService minIOService;
+
     @Autowired
     private CourseRepository courseRepository;
     @Autowired

@@ -17,4 +17,7 @@ public class StudentDTO {
     private Integer totalCourseRegistered;
     private String username;
     private List<String> roles;
+    private String facebook;
+    private String linkedin;
+    private String github;
 }

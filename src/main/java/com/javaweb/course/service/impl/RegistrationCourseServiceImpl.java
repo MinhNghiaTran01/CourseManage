@@ -69,4 +69,9 @@ public class RegistrationCourseServiceImpl implements RegistrationCourseService 
     public RegistrationCourse findByCourseIdAndUserId(Integer courseId, Integer userId) {
         return registrationCourseRepository.findByCourseIdAndUserId(courseId,userId);
     }
+
+    @Override
+    public List<RegistrationCourse> findByUserId(Integer userId) {
+        return registrationCourseRepository.findByUserId(userId);
+    }
 }

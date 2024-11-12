@@ -1,5 +1,6 @@
 package com.javaweb.course.controller.web;
 
+import com.javaweb.course.entity.User;
 import com.javaweb.course.model.dto.MyUserDetails;
 import com.javaweb.course.model.dto.AuthDTO;
 import com.javaweb.course.model.dto.ProfileDTO;
@@ -53,9 +54,9 @@ public class AuthController {
                 if(!isRegisterd) {
                     userService.resgisterAccountGoogle(userDTO);
                 }
-                userDTO = userService.getUserByUserName(userDTO.getUsername());
+                User user = userService.getUserByUserName(userDTO.getUsername());
                 String accessToken = jwtUtil.generateAccessToken(userDTO);
-                AuthResponse response = new AuthResponse(userDTO.getId(), userDTO.getUsername(), userDTO.getUsername(), accessToken);
+                AuthResponse response = new AuthResponse(user.getId(), user.getUsername(), user.getUsername(), accessToken);
                 return ResponseEntity.ok().body(response);
             }
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Registration Account Google failed");
@@ -70,9 +71,9 @@ public class AuthController {
             boolean success = userService.userRegister(userDTO);
 
             if(success) {
-                userDTO = userService.getUserByUserName(userDTO.getUsername());
+                User user = userService.getUserByUserName(userDTO.getUsername());
                 String accessToken = jwtUtil.generateAccessToken(userDTO);
-                AuthResponse response = new AuthResponse(userDTO.getId(), userDTO.getUsername(), userDTO.getUsername(), accessToken);
+                AuthResponse response = new AuthResponse(user.getId(), user.getUsername(), user.getUsername(), accessToken);
                 return ResponseEntity.ok().body(response);
             }
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Registration failed");

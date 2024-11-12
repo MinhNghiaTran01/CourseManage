@@ -12,4 +12,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     @Query("SELECT c FROM Course c WHERE LOWER(c.courseName) LIKE LOWER(CONCAT('%', :courseName, '%'))")
     List<Course> findByCourseNameLikeIgnoreCase(String courseName);
+
+    Course findByCode(String code);
 }

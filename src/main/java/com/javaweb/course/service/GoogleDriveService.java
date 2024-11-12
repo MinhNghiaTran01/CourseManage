@@ -1,0 +1,10 @@
+package com.javaweb.course.service;
+
+import org.springframework.http.ResponseEntity;
+
+
+public interface GoogleDriveService {
+    ResponseEntity<?> createNewFolder(String folderName, String parentFolderId);
+
+    ResponseEntity<?> getWebViewLink(String fileId);
+}

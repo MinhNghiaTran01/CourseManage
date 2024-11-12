@@ -31,6 +31,12 @@ public class Student {
 
     private String fullName;
 
+    private String facebook;
+
+    private String github;
+
+    private String linkedin;
+
     @OneToOne
     @MapsId // Ánh xạ khóa chính với khóa ngoại (user_id)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

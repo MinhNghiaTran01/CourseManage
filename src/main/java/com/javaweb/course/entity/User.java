@@ -1,5 +1,6 @@
 package com.javaweb.course.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javaweb.course.enums.AuthProvider;
 import com.javaweb.course.enums.State;
 import lombok.*;
@@ -43,6 +44,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")

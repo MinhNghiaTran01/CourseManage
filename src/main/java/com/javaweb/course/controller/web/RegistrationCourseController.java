@@ -6,7 +6,6 @@ import com.javaweb.course.model.respone.CourseResponse;
 import com.javaweb.course.model.respone.RegistrationCourseResponse;
 import com.javaweb.course.service.CourseService;
 import com.javaweb.course.service.RegistrationCourseService;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +36,8 @@ public class RegistrationCourseController {
 //    }
 
     @GetMapping("")
-    public ResponseEntity<List<CourseResponse>> findAll() {
-        List<RegistrationCourse> registrationCourses = registrationCourseService.findAll();
+    public ResponseEntity<List<CourseResponse>> findByUserId(@RequestParam Integer userId) {
+        List<RegistrationCourse> registrationCourses = registrationCourseService.findByUserId(userId);
         List<CourseResponse> courseResponses = (List<CourseResponse>) registrationCourses.stream()
                 .map(registrationCourse -> courseService.findById(registrationCourse.getCourse().getId()))
                 .collect(Collectors.toList());

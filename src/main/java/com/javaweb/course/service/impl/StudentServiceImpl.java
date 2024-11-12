@@ -33,7 +33,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Optional<Student> findById(Integer id) {
-        return studentRepository.findById(id);
+    public Student findById(Integer id) {
+        return studentRepository.findById(id).orElse(null);
     }
 }

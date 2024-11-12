@@ -105,11 +105,10 @@ public class StudentAdminController {
             user.setRoles(roles);
 
             // Lấy thực thể Student hiện có để tránh tạo đối tượng mới với cùng ID
-            Optional<Student> existingStudentOptional  = studentService.findById(user.getId());
-            if (existingStudentOptional.isEmpty()) {
+            Student existingStudent  = studentService.findById(user.getId());
+            if (existingStudent!=null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");
             }
-            Student existingStudent = existingStudentOptional.get();
             modelMapper.map(studentDTO, existingStudent);
 
             // Thiết lập quan hệ user-student
@@ -129,10 +128,10 @@ public class StudentAdminController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        Optional<User> user = userService.findById(Integer.valueOf(id));
-        if(user.isPresent()) {
-            user.get().setState(State.DELETED);
-            userService.delete(user.get());
+       User user = userService.findById(Integer.valueOf(id));
+        if(user!=null) {
+            user.setState(State.DELETED);
+            userService.delete(user);
             return ResponseEntity.status(HttpStatus.OK).body("Delete successful");
         }
         else{
