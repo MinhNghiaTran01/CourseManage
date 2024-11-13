@@ -9,10 +9,9 @@ import java.util.List;
 
 public interface CourseService extends BaseService<Course, CourseDto, CourseResponse> {
 
-    void updateAndImage(CourseDto courseDto) throws IOException;
-
     List<CourseResponse> findAll();
 
     List<Course> findByCourseNameLikeIgnoreCase(String courseName);
 
+    public void updateCourse(CourseDto courseDto) throws IOException;
 }

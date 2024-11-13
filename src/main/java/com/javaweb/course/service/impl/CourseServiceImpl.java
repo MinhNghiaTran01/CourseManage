@@ -33,24 +33,28 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void update(Integer id, CourseDto courseDto) {
-        Course course = courseRepository.findById(id).orElse(null);
-        if (course != null) {
-            course.setCourseName(courseDto.getCourseName());
-            course.setCode(courseDto.getCode());
-            course.setDescription(courseDto.getDescription());
-            course.setPrice(courseDto.getPrice());
-            course.setState(courseDto.getState());
-            course.setUpdatedAt(Helper.getNowMillisAtUtc());
-            courseRepository.save(course);
-        }
     }
+
+
+//    @Override
+//    public void update(Integer id, CourseDto courseDto) {
+//        Course course = courseRepository.findById(id).orElse(null);
+//        if (course != null) {
+//            course.setCourseName(courseDto.getCourseName());
+//            course.setCode(courseDto.getCode());
+//            course.setDescription(courseDto.getDescription());
+//            course.setPrice(courseDto.getPrice());
+//            course.setState(courseDto.getState());
+//            course.setUpdatedAt(Helper.getNowMillisAtUtc());
+//            courseRepository.save(course);
+//        }
+//    }
 
     @Override
     public void delete(Integer id) {
         courseRepository.deleteById(id);
     }
 
-    @Override
     public List<CourseResponse> findAll() {
         List<Course> courses = courseRepository.findAll();
 
@@ -90,12 +94,8 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
-
-
-
-
     @Override
-    public void updateAndImage(CourseDto courseDto) throws IOException {
+    public void updateCourse(CourseDto courseDto) throws IOException {
         Course course = courseRepository.findById(courseDto.getId())
                 .orElseThrow(() -> new RuntimeException("Course not found"));
         course.setCourseName(courseDto.getCourseName());
@@ -111,7 +111,6 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.save(course);
     }
 
-    @Override
     public List<Course> findByCourseNameLikeIgnoreCase(String courseName) {
         return courseRepository.findByCourseNameLikeIgnoreCase(courseName);
     }

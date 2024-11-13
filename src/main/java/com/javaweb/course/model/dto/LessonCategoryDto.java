@@ -14,4 +14,8 @@ public class LessonCategoryDto {
   private String name;
 
   private State state;
+
+  private String folderIdCourse;
+
+  private String folderId;
 }

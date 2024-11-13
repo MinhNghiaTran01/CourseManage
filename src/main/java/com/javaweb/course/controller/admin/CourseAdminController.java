@@ -31,11 +31,11 @@ public class CourseAdminController {
         return courseServiceImpl.findAll();
     }
 
-    @PutMapping("{id}")
-    public Boolean update(@PathVariable(value = "id") Integer id, CourseDto courseDto) {
-        courseServiceImpl.update(id, courseDto);
-        return true;
-    }
+//    @PutMapping("{id}")
+//    public Boolean update(@PathVariable(value = "id") Integer id, CourseDto courseDto) {
+//        courseServiceImpl.update(id, courseDto);
+//        return true;
+//    }
 
     // Thiếu dấu / trước {id}
 // CourseResponse làm gì có cung cấp id trả về mà ở đây lại nhận id từ frontend trả về
@@ -78,9 +78,9 @@ public class CourseAdminController {
     }
 
     // Thêm cac phương thức bổ sung trường private MultipartFile fileImage
-    @PatchMapping(value = "s2",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Boolean updateAndImage(@ModelAttribute CourseDto courseDto) throws IOException {
-        courseServiceImpl.updateAndImage(courseDto);
+    @PatchMapping(value = "/s2",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Boolean update(@ModelAttribute CourseDto courseDto) throws IOException {
+        courseServiceImpl.updateCourse(courseDto);
         return true;
     }
 }

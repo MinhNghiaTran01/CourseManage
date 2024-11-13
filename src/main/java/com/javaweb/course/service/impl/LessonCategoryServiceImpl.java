@@ -26,6 +26,7 @@ public class LessonCategoryServiceImpl implements LessonCategoryService {
     lessonCategory.setName(lessonCategoryDto.getName());
     lessonCategory.setCourseId(lessonCategoryDto.getCourseId());
     lessonCategory.setState(State.ACTIVE);
+    lessonCategory.setFolderId(lessonCategoryDto.getFolderId());
     lessonCategory.setCreatedAt(Helper.getNowMillisAtUtc());
     lessonCategory.setUpdatedAt(Helper.getNowMillisAtUtc());
 

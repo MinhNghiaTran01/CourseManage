@@ -21,7 +21,8 @@ public class LessonResponse {
 //  Thêm lessonCategoryId
     private Integer lessonCategoryId;
 
-    private String videoUrl;
+
+    private String folderId;
 
     public LessonResponse(Lesson lesson) {
         this.lessonName = lesson.getLessonName();
@@ -31,6 +32,6 @@ public class LessonResponse {
         this.courseId = lesson.getCourseId();
         this.id = lesson.getId();
         this.lessonCategoryId = lesson.getLessonCategoryId();
-        this.videoUrl = lesson.getVideoUrl();
+        this.folderId = lesson.getFolderId();
     }
 }

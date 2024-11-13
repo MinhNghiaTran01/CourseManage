@@ -27,6 +27,8 @@ public class CourseResponse {
 //  thêm thuộc tính image
     private byte[] image;
 
+    private String folderId;
+
     public CourseResponse(Course course) {
 //      thêm id để cung cấp id khi xóa
         this.id = course.getId();
@@ -37,5 +39,6 @@ public class CourseResponse {
         this.state = course.getState();
 //      thêm đoạn code để gán image
         this.image = course.getImage();
+        this.folderId = course.getFolderId();
     }
 }

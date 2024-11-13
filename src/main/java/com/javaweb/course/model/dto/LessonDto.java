@@ -22,16 +22,17 @@ public class LessonDto {
 
     private Integer lessonCategoryId;
 
-    private MultipartFile fileVideo;
+    private String folderId;
+
 
     public LessonDto(String lessonName, String description, State state, String duration,
-                     Integer courseId, Integer lessonCategoryId, MultipartFile fileVideo) {
+                     Integer courseId, Integer lessonCategoryId, String folderId) {
         this.lessonName = lessonName;
         this.description = description;
         this.state = state;
         this.duration = duration;
         this.courseId = courseId;
         this.lessonCategoryId = lessonCategoryId;
-        this.fileVideo = fileVideo;
+        this.folderId = folderId;
     }
 }

@@ -30,4 +30,7 @@ public class LessonCategory {
     @Column(name = "updated_at")
     private Long updatedAt;
 
+    @Column
+    private String folderId;
+
 }

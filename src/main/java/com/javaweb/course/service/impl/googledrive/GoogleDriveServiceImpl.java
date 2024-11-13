@@ -2,6 +2,8 @@ package com.javaweb.course.service.impl.googledrive;
 
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.Permission;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.javaweb.course.entity.Course;
 import com.javaweb.course.repository.CourseRepository;
 import com.javaweb.course.service.GoogleDriveService;
@@ -10,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -36,8 +40,6 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
                 parentFolderId = DEFAULT_PARENT_FOLDER_ID;
             }
             // Tạo thư mục
-//            String folderId = createNewFolder(folderName, parentFolderId);
-//            return ResponseEntity.status(HttpStatus.CREATED).body(folderId);
             // Metadata của thư mục mới
             com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
             fileMetadata.setName(folderName);
@@ -93,5 +95,15 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Failed to add permission: " + e.getMessage());
         }
+    }
+
+    @Override
+    public String getAccessToken() throws IOException {
+        String serviceAccountKeyPath = "classpath:static/service_account.json";
+        GoogleCredentials credentials = GoogleCredentials
+                .fromStream(getClass().getClassLoader().getResourceAsStream("static/service_account.json"))
+                .createScoped(Collections.singleton("https://www.googleapis.com/auth/drive.file"));
+        credentials.refreshIfExpired();
+        return credentials.getAccessToken().getTokenValue();
     }
 }

@@ -15,10 +15,13 @@ public class LessonCategoryResponse {
 
   private State state;
 
+  private String folderId;
+
   public LessonCategoryResponse(LessonCategory lessonCategory) {
     this.id = lessonCategory.getId();
     this.name = lessonCategory.getName();
     this.state = lessonCategory.getState();
     this.courseId = lessonCategory.getCourseId();
+    this.folderId = lessonCategory.getFolderId();
   }
 }

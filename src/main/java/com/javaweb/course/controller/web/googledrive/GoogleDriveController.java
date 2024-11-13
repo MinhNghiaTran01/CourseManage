@@ -36,8 +36,22 @@ public class GoogleDriveController {
         return googleDriveService.addPermission(fileId,email,role);
     }
 
-    @PostMapping("/create-folder")
-    public ResponseEntity<?> createFolder(@RequestParam String folderName, @RequestParam(required = false) String parentFolderId) {
+    @PostMapping("/create-folder-course")
+    public ResponseEntity<?> createFolderCourse(@RequestParam String folderName, @RequestParam(required = false) String parentFolderId) {
         return googleDriveService.createNewFolder(folderName, parentFolderId);
+    }
+
+    @PostMapping("/create-folder-category-course")
+    public ResponseEntity<?> createFolderCategoryCourse(@RequestParam String folderName, @RequestParam(required = false) String parentFolderId) {
+        return googleDriveService.createNewFolder(folderName, parentFolderId);
+    }
+
+    @GetMapping("/get-token")
+    public String getAccessToken() {
+        try {
+            return googleDriveService.getAccessToken();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get access token", e);
+        }
     }
 }
