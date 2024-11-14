@@ -44,12 +44,10 @@ public class RegistrationCourseServiceImpl implements RegistrationCourseService 
                 registrationCourse.setRegistrationDate(registrationCourseDTO.getRegistrationDate());
                 registrationCourseRepository.save(registrationCourse);
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -67,7 +65,7 @@ public class RegistrationCourseServiceImpl implements RegistrationCourseService 
 
     @Override
     public RegistrationCourse findByCourseIdAndUserId(Integer courseId, Integer userId) {
-        return registrationCourseRepository.findByCourseIdAndUserId(courseId,userId);
+        return registrationCourseRepository.findByCourseIdAndUserId(courseId, userId);
     }
 
     @Override

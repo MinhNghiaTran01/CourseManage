@@ -52,11 +52,11 @@ public class S3ServiceImpl implements S3Service {
 
     @Override
     public String createGetPresignedUrl(String keyName) {
-        try(S3Presigner presigner = S3Presigner.builder()
+        try (S3Presigner presigner = S3Presigner.builder()
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create(accessKeyId, secretAccessKey)))
-                .build()){
+                .build()) {
             GetObjectRequest objectRequest = GetObjectRequest.builder()
                     .bucket(bucketName)
                     .key(keyName)

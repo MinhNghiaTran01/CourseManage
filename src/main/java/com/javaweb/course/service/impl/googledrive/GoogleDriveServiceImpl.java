@@ -3,7 +3,6 @@ package com.javaweb.course.service.impl.googledrive;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.Permission;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.javaweb.course.entity.Course;
 import com.javaweb.course.repository.CourseRepository;
 import com.javaweb.course.service.GoogleDriveService;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -35,24 +33,24 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Course already exists");
         }
         try {
-            // Sử dụng thư mục mặc định nếu không có parentFolderId
+            
             if (parentFolderId == null || parentFolderId.isEmpty()) {
                 parentFolderId = DEFAULT_PARENT_FOLDER_ID;
             }
-            // Tạo thư mục
-            // Metadata của thư mục mới
+            
+            
             com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
             fileMetadata.setName(folderName);
             fileMetadata.setMimeType("application/vnd.google-apps.folder");
 
-            // Nếu có parentFolderId, gán vào metadata
+            
             if (parentFolderId != null && !parentFolderId.isEmpty()) {
                 fileMetadata.setParents(List.of(parentFolderId));
             }
 
-            // Gọi API để tạo thư mục
+            
             com.google.api.services.drive.model.File folder = driveService.files().create(fileMetadata)
-                    .setFields("id") // Lấy ID của thư mục được tạo
+                    .setFields("id") 
                     .execute();
             return ResponseEntity.status(HttpStatus.CREATED).body(folder.getId());
         } catch (Exception e) {
@@ -64,10 +62,10 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
     @Override
     public ResponseEntity<?> getWebViewLink(String fileId) {
         try {
-            // Lấy metadata file từ Google Drive API
+            
             String webViewLink = driveService.files()
                     .get(fileId)
-                    .setFields("webViewLink") // Chỉ lấy trường webViewLink
+                    .setFields("webViewLink") 
                     .execute()
                     .getWebViewLink();
 
@@ -83,12 +81,12 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
         try {
             Permission permission = new Permission();
             permission.setType("user");
-            permission.setRole(role); // Role: reader, writer, or owner
+            permission.setRole(role); 
             permission.setEmailAddress(email);
 
-            // Thực hiện gán quyền với Drive API
+            
             driveService.permissions().create(fileId, permission)
-                    .setSendNotificationEmail(true) // Notify the user by email
+                    .setSendNotificationEmail(true) 
                     .execute();
             return ResponseEntity.status(HttpStatus.CREATED).body("Permission added successfully to file ID: " + fileId);
         } catch (Exception e) {

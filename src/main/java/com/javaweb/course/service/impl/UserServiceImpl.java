@@ -6,7 +6,6 @@ import com.javaweb.course.enums.AuthProvider;
 import com.javaweb.course.model.dto.UserDTO;
 import com.javaweb.course.repository.RoleRepository;
 import com.javaweb.course.repository.UserRepository;
-//import com.javaweb.course.security.oauth2.CustomerOAuth2User;
 import com.javaweb.course.service.UserService;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -14,8 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 //    }
 
 
-    public Set<Role> generateRole(){
+    public Set<Role> generateRole() {
         Role role = roleRepository.findByName("ROLE_USER");
         Set<Role> roles = new HashSet<>();
         roles.add(role);
@@ -89,14 +89,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
     public User getUserByUserName(String username) {
         try {
             User user = userRepository.findByUsername(username);
             return user;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -108,8 +106,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(userDTO.getUsername());
         if (user == null) {
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }

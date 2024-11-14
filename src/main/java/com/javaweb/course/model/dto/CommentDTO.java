@@ -1,6 +1,5 @@
 package com.javaweb.course.model.dto;
 
-import com.javaweb.course.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -17,7 +17,7 @@ public class CourseBenefit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Lob // Để lưu trữ dữ liệu lớn, ví dụ JSON
+    @Lob 
     private String benefit;
 
     private Integer courseId;

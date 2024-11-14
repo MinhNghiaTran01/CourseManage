@@ -1,17 +1,13 @@
 package com.javaweb.course.utils;
 
-import com.javaweb.course.config.VNPAYConfig;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.servlet.http.HttpServletRequest;
-import java.net.URLEncoder;
-import java.util.*;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -34,7 +30,7 @@ public class VNPayUtil {
                 sb.append("&");
             }
         }
-        return hmacSHA512("ZVMKWSE3FVB1I49GSJMM2RIIU5KFQ0RK",sb.toString());
+        return hmacSHA512("ZVMKWSE3FVB1I49GSJMM2RIIU5KFQ0RK", sb.toString());
     }
 
 
@@ -47,7 +43,7 @@ public class VNPayUtil {
             byte[] hmacKeyBytes = key.getBytes();
             final SecretKeySpec secretKey = new SecretKeySpec(hmacKeyBytes, "HmacSHA512");
             hmac512.init(secretKey);
-            byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
+            byte[] dataBytes = data.getBytes(StandardCharsets.US_ASCII);
             byte[] result = hmac512.doFinal(dataBytes);
             StringBuilder sb = new StringBuilder(2 * result.length);
             for (byte b : result) {

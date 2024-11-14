@@ -40,12 +40,12 @@ public class Course {
     @Column(name = "updated_at")
     private Long updatedAt;
 
-    //  thêm phần image
+    
     @Lob
     private byte[] image;
 
     private String folderId;
-    //   Thêm phần registrationCourses
+    
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RegistrationCourse> registrationCourses = new HashSet<>();
 }

@@ -6,16 +6,15 @@ import lombok.Data;
 @Data
 public class LessonCategoryDto {
 
-//   thêm thuộc tính id
-  private Integer id;
+    private Integer id;
 
-  private Integer courseId;
+    private Integer courseId;
 
-  private String name;
+    private String name;
 
-  private State state;
+    private State state;
 
-  private String folderIdCourse;
+    private String folderIdCourse;
 
-  private String folderId;
+    private String folderId;
 }

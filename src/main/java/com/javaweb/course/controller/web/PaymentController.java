@@ -4,15 +4,15 @@ import com.javaweb.course.model.dto.PaymentVnpayDTO;
 import com.javaweb.course.model.dto.RegistrationCourseDTO;
 import com.javaweb.course.model.respone.ResponseObject;
 import com.javaweb.course.model.respone.VNPayResponse;
-import com.javaweb.course.repository.RegistrationCourseRepository;
 import com.javaweb.course.service.PaymentVnPayService;
 import com.javaweb.course.service.RegistrationCourseService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -50,10 +50,10 @@ public class PaymentController {
         boolean checksum = paymentService.checkSum(request);
         PaymentVnpayDTO paymentVnpayDTO = PaymentVnpayDTO.builder()
                 .paymentMethod(request.getParameter("vnp_CardType"))
-                .amount(Long.parseLong(request.getParameter("vnp_Amount"))) // Chuyển đổi amount từ String sang Long
+                .amount(Long.parseLong(request.getParameter("vnp_Amount")))
                 .paymentState(request.getParameter("vnp_TransactionStatus"))
                 .transactionId(request.getParameter("vnp_TransactionNo"))
-                .paymentDate(Long.parseLong(request.getParameter("vnp_PayDate"))) // Chuyển đổi paymentDate từ String sang Long
+                .paymentDate(Long.parseLong(request.getParameter("vnp_PayDate")))
                 .bankCode(request.getParameter("vnp_BankCode"))
                 .orderId(request.getParameter("vnp_TxnRef"))
                 .build();
@@ -77,8 +77,8 @@ public class PaymentController {
                 .vnpTransactionStatus(request.getParameter("vnp_TransactionStatus"))
                 .vnpTxnRef(request.getParameter("vnp_TxnRef"))
                 .vnpSecureHash(request.getParameter("vnp_SecureHash"))
-                .code("00") // Đặt giá trị mặc định hoặc tùy chỉnh theo yêu cầu
-                .message("Transaction successful") // Đặt thông báo mặc định hoặc tùy chỉnh
+                .code("00")
+                .message("Transaction successful")
                 .build();
 
         paymentService.checkTransactionState(request);

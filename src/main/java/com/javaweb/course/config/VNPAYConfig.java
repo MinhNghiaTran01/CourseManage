@@ -2,12 +2,14 @@ package com.javaweb.course.config;
 
 import com.javaweb.course.utils.VNPayUtil;
 import lombok.Data;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
 
 @Data
 @Configuration
@@ -18,7 +20,7 @@ public class VNPAYConfig {
     @Value("${payment.vnPay.returnUrl}")
     private String vnp_ReturnUrl;
     @Value("${payment.vnPay.tmnCode}")
-    private String vnp_TmnCode ;
+    private String vnp_TmnCode;
     @Value("${payment.vnPay.secretKey}")
     private String secretKey;
     @Value("${payment.vnPay.version}")
@@ -37,8 +39,8 @@ public class VNPAYConfig {
         vnpParamsMap.put("vnp_Command", this.vnp_Command);
         vnpParamsMap.put("vnp_TmnCode", this.vnp_TmnCode);
         vnpParamsMap.put("vnp_CurrCode", "VND");
-        vnpParamsMap.put("vnp_TxnRef",  vnp_TxnRef);
-        vnpParamsMap.put("vnp_OrderInfo", "Thanh toan don hang:" +  vnp_TxnRef);
+        vnpParamsMap.put("vnp_TxnRef", vnp_TxnRef);
+        vnpParamsMap.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnpParamsMap.put("vnp_OrderType", this.orderType);
         vnpParamsMap.put("vnp_Locale", "vn");
         vnpParamsMap.put("vnp_ReturnUrl", this.vnp_ReturnUrl);

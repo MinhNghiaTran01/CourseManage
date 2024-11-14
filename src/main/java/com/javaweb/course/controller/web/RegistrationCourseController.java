@@ -1,7 +1,6 @@
 package com.javaweb.course.controller.web;
 
 import com.javaweb.course.entity.RegistrationCourse;
-import com.javaweb.course.model.dto.RegistrationCourseDTO;
 import com.javaweb.course.model.respone.CourseResponse;
 import com.javaweb.course.model.respone.RegistrationCourseResponse;
 import com.javaweb.course.service.CourseService;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,10 +45,19 @@ public class RegistrationCourseController {
     @ExceptionHandler(Exception.class)
     @GetMapping("/search")
     public ResponseEntity<RegistrationCourseResponse> findByCourseIdAndUserId(@RequestParam Integer courseId, @RequestParam Integer userId) {
-        RegistrationCourse registrationCourse = registrationCourseService.findByCourseIdAndUserId(courseId, userId);
-        RegistrationCourseResponse registrationCourseResponse = new RegistrationCourseResponse();
-        registrationCourseResponse.setCourseId(registrationCourse.getCourse().getId());
-        registrationCourseResponse.setCourseName(registrationCourse.getCourse().getCourseName());
-        return ResponseEntity.status(HttpStatus.OK).body(registrationCourseResponse);
+        try {
+            RegistrationCourse registrationCourse = registrationCourseService.findByCourseIdAndUserId(courseId, userId);
+            if (registrationCourse != null) {
+                RegistrationCourseResponse registrationCourseResponse = new RegistrationCourseResponse();
+                registrationCourseResponse.setCourseId(registrationCourse.getCourse().getId());
+                registrationCourseResponse.setCourseName(registrationCourse.getCourse().getCourseName());
+                return ResponseEntity.status(HttpStatus.OK).body(registrationCourseResponse);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RegistrationCourseResponse());
+        }
     }
 }

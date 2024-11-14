@@ -2,9 +2,7 @@ package com.javaweb.course.config;
 
 import com.javaweb.course.repository.UserRepository;
 import com.javaweb.course.security.handeler.LocalLoginSuccessHandler;
-//import com.javaweb.course.security.handeler.OAuth2AuthenticationSuccessHandler;
 import com.javaweb.course.security.jwt.JwtTokenFilter;
-//import com.javaweb.course.security.oauth2.CustomerOAuth2UserService;
 import com.javaweb.course.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -72,18 +70,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http = http.authorizeRequests()
                 .antMatchers("/", "/user/auth/login", "/oauth/**"
-                        , "/login", "/auth/register", "/user/**", "/ws/**","/v1/**","/admin/**").permitAll()
+                        , "/login", "/auth/register", "/user/**", "/ws/**", "/v1/**", "/admin/**").permitAll()
                 .antMatchers("/products").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .antMatchers("/admin/manageProduct").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated().and();
 //                .antMatchers("*").permitAll().and();
         // login with form
         http
-            .formLogin().permitAll()
-            .loginPage("/login")
-            .usernameParameter("username")
-            .passwordParameter("password")
-            .and();
+                .formLogin().permitAll()
+                .loginPage("/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .and();
 //            .oauth2Login()
 //            .loginPage("/login")
 //            .userInfoEndpoint()

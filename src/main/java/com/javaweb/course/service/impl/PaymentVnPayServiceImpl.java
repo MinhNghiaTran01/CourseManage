@@ -15,11 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -113,14 +113,12 @@ public class PaymentVnPayServiceImpl implements PaymentVnPayService {
     public Boolean save(PaymentVnpayDTO paymentVnpayDTO) {
         try {
             PaymentVnpay paymentVnpay = paymentVnpayRepository.findByTransactionId(paymentVnpayDTO.getTransactionId());
-            if(paymentVnpay == null) {
+            if (paymentVnpay == null) {
                 paymentVnpay = modelMapper.map(paymentVnpayDTO, PaymentVnpay.class);
                 paymentVnpayRepository.save(paymentVnpay);
                 return true;
-            }
-            else return false;
-        }
-        catch (Exception e) {
+            } else return false;
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

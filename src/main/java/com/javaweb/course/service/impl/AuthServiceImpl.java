@@ -5,7 +5,6 @@ import com.javaweb.course.model.dto.UserDTO;
 import com.javaweb.course.model.respone.AuthResponse;
 import com.javaweb.course.security.jwt.JwtTokenUtil;
 import com.javaweb.course.service.AuthService;
-import com.javaweb.course.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
 
             MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
 
-            userDTO = modelMapper.map(myUserDetails.getUser(),UserDTO.class);
+            userDTO = modelMapper.map(myUserDetails.getUser(), UserDTO.class);
 
             String accessToken = jwtUtil.generateAccessToken(userDTO);
             AuthResponse response = new AuthResponse(userDTO.getId(), userDTO.getUsername(), userDTO.getUsername(), accessToken);

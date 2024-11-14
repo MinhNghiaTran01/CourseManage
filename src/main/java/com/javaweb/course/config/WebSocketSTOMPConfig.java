@@ -12,17 +12,15 @@ public class WebSocketSTOMPConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-//        tiền tố topic để gửi thông điệp từ server về client
         config.enableSimpleBroker("/topic");
-//        tiền tố app để client gui đến server
         config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws") // Tạo endpoint cho client kết nối
-                .setAllowedOriginPatterns("*") // Cho phép tất cả các nguồn truy cập
-                .withSockJS(); // Sử dụng SockJS để hỗ trợ fallback cho WebSocket
+        registry.addEndpoint("/ws")
+                .setAllowedOriginPatterns("*")
+                .withSockJS();
     }
 
 }

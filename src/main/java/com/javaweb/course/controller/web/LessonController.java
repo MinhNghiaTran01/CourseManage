@@ -18,6 +18,6 @@ public class LessonController {
 
     @GetMapping
     public ResponseEntity<?> findAll(@RequestParam Integer courseId, @RequestParam Integer lessonCategoryId) {
-        return ResponseEntity.status(HttpStatus.OK).body(lessonService.findAll(courseId,lessonCategoryId));
+        return ResponseEntity.status(HttpStatus.OK).body(lessonService.findAll(courseId, lessonCategoryId));
     }
 }

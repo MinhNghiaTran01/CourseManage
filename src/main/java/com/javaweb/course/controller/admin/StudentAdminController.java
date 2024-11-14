@@ -6,12 +6,9 @@ import com.javaweb.course.entity.User;
 import com.javaweb.course.enums.State;
 import com.javaweb.course.model.dto.StudentDTO;
 import com.javaweb.course.model.respone.StudentResponse;
-import com.javaweb.course.repository.RoleRepository;
-import com.javaweb.course.repository.UserRepository;
 import com.javaweb.course.service.RoleService;
 import com.javaweb.course.service.StudentService;
 import com.javaweb.course.service.UserService;
-import com.javaweb.course.service.impl.RoleServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -53,7 +49,6 @@ public class StudentAdminController {
                 roleNameBuilder.append(role.getName().substring(5)).append(", ");
             });
 
-            // Xóa dấu phẩy cuối cùng nếu có
             String roleName = roleNameBuilder.length() > 0
                     ? roleNameBuilder.substring(0, roleNameBuilder.length() - 2)
                     : "";
@@ -63,7 +58,7 @@ public class StudentAdminController {
                     .id(student.getId())
                     .phoneNumber(student.getPhoneNumber() != null ? student.getPhoneNumber() : "")
                     .address(student.getAddress() != null ? student.getAddress() : "")
-                    .fullName(student.getFullName()!=null ? student.getFullName() : "")
+                    .fullName(student.getFullName() != null ? student.getFullName() : "")
                     .totalAmountPaid(student.getTotalAmountPaid())
                     .totalCourseRegistered(student.getTotalCourseRegistered())
                     .username(user.getUsername() != null ? user.getUsername() : "")
@@ -104,14 +99,12 @@ public class StudentAdminController {
             User user = userService.findByUsername(studentDTO.getUsername());
             user.setRoles(roles);
 
-            // Lấy thực thể Student hiện có để tránh tạo đối tượng mới với cùng ID
-            Student existingStudent  = studentService.findById(user.getId());
-            if (existingStudent!=null) {
+            Student existingStudent = studentService.findById(user.getId());
+            if (existingStudent != null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");
             }
             modelMapper.map(studentDTO, existingStudent);
 
-            // Thiết lập quan hệ user-student
             existingStudent.setUser(user);
             user.setStudent(existingStudent);
 
@@ -128,13 +121,12 @@ public class StudentAdminController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-       User user = userService.findById(Integer.valueOf(id));
-        if(user!=null) {
+        User user = userService.findById(Integer.valueOf(id));
+        if (user != null) {
             user.setState(State.DELETED);
             userService.delete(user);
             return ResponseEntity.status(HttpStatus.OK).body("Delete successful");
-        }
-        else{
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");
         }
     }

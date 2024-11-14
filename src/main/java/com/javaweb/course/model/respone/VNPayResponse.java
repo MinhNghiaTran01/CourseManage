@@ -2,6 +2,7 @@ package com.javaweb.course.model.respone;
 
 import lombok.Builder;
 import lombok.Data;
+
 @Builder
 @Data
 public class VNPayResponse {

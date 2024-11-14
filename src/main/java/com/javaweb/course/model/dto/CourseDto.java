@@ -13,7 +13,6 @@ import java.util.List;
 @Data
 public class CourseDto {
 
-//     thêm id để update
     private Integer id;
 
     private String code;

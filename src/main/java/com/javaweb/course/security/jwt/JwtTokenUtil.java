@@ -1,13 +1,13 @@
 package com.javaweb.course.security.jwt;
 
 
-import com.javaweb.course.model.dto.MyUserDetails;
 import com.javaweb.course.model.dto.ProfileDTO;
 import com.javaweb.course.model.dto.UserDTO;
 import io.jsonwebtoken.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
 @Component
@@ -37,7 +37,7 @@ public class JwtTokenUtil {
         } catch (ExpiredJwtException ex) {
             LOGGER.error("JWT expired", ex);
         } catch (IllegalArgumentException ex) {
-            LOGGER.error("Token is null, empty or only whitespace",ex);
+            LOGGER.error("Token is null, empty or only whitespace", ex);
         } catch (MalformedJwtException ex) {
             LOGGER.error("JWT is invalid", ex);
         } catch (UnsupportedJwtException ex) {

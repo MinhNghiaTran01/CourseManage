@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class CourseWebResponse {
-  private Integer courseId;
+    private Integer courseId;
 
-  private List<LessonCategoryWebResponse> lessonCategoryWebResponses;
+    private List<LessonCategoryWebResponse> lessonCategoryWebResponses;
 }

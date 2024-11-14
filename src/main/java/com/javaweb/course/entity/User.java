@@ -3,12 +3,14 @@ package com.javaweb.course.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javaweb.course.enums.AuthProvider;
 import com.javaweb.course.enums.State;
-import lombok.*;
+import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 @Data
 @Entity
 @Table(name = "user")
@@ -18,7 +20,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "username",nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password")
@@ -37,7 +39,7 @@ public class User {
         this.password = password;
     }
 
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @ToString.Exclude
     @JoinTable(
             name = "user_role",
@@ -47,7 +49,7 @@ public class User {
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     @ToString.Exclude
     private Student student;
 

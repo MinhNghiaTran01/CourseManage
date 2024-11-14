@@ -6,7 +6,6 @@ import com.javaweb.course.service.impl.LessonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,21 +22,18 @@ public class LessonAdminController {
         return lessonService.findAll(courseId, lessonCategoryId);
     }
 
-//  Thiếu /{id} và @PathVariable
     @DeleteMapping("/{id}")
     public Boolean deleteById(@PathVariable Integer id) {
         lessonService.delete(id);
         return true;
     }
 
-    // nhận MultipartFile vào mà chưa thấy làm gì
-    @PostMapping(value = "",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Boolean save(@ModelAttribute LessonDto lessonDto) {
         lessonService.save(lessonDto);
         return true;
     }
 
-// thêm updates2 test
     @PatchMapping
     public Boolean updates2(@RequestBody LessonDto lessonDto) {
         lessonService.updates2(lessonDto);

@@ -3,7 +3,6 @@ package com.javaweb.course.service.impl;
 import com.javaweb.course.entity.LessonCategory;
 import com.javaweb.course.enums.State;
 import com.javaweb.course.model.dto.LessonCategoryDto;
-import com.javaweb.course.model.respone.CourseResponse;
 import com.javaweb.course.model.respone.LessonCategoryResponse;
 import com.javaweb.course.repository.LessonCategoryRepository;
 import com.javaweb.course.service.LessonCategoryService;
@@ -17,66 +16,66 @@ import java.util.Objects;
 @Service
 public class LessonCategoryServiceImpl implements LessonCategoryService {
 
-  @Autowired
-  private LessonCategoryRepository lessonCategoryRepository;
+    @Autowired
+    private LessonCategoryRepository lessonCategoryRepository;
 
-  @Override
-  public void save(LessonCategoryDto lessonCategoryDto) {
-    LessonCategory lessonCategory = new LessonCategory();
-    lessonCategory.setName(lessonCategoryDto.getName());
-    lessonCategory.setCourseId(lessonCategoryDto.getCourseId());
-    lessonCategory.setState(State.ACTIVE);
-    lessonCategory.setFolderId(lessonCategoryDto.getFolderId());
-    lessonCategory.setCreatedAt(Helper.getNowMillisAtUtc());
-    lessonCategory.setUpdatedAt(Helper.getNowMillisAtUtc());
+    @Override
+    public void save(LessonCategoryDto lessonCategoryDto) {
+        LessonCategory lessonCategory = new LessonCategory();
+        lessonCategory.setName(lessonCategoryDto.getName());
+        lessonCategory.setCourseId(lessonCategoryDto.getCourseId());
+        lessonCategory.setState(State.ACTIVE);
+        lessonCategory.setFolderId(lessonCategoryDto.getFolderId());
+        lessonCategory.setCreatedAt(Helper.getNowMillisAtUtc());
+        lessonCategory.setUpdatedAt(Helper.getNowMillisAtUtc());
 
-    lessonCategoryRepository.save(lessonCategory);
-  }
-
-  @Override
-  public void update(Integer id, LessonCategoryDto lessonCategoryDto) {
-    LessonCategory lessonCategory = lessonCategoryRepository.findById(id).orElse(null);
-    if (lessonCategory != null) {
-      lessonCategory.setName(lessonCategoryDto.getName());
-      lessonCategory.setState(lessonCategoryDto.getState());
-      lessonCategory.setUpdatedAt(Helper.getNowMillisAtUtc());
+        lessonCategoryRepository.save(lessonCategory);
     }
-  }
 
-  @Override
-  public void delete(Integer id) {
-    lessonCategoryRepository.deleteById(id);
-  }
-
-  @Override
-  public List<LessonCategoryResponse> findAll() {
-    List<LessonCategory> lessonCategories = lessonCategoryRepository.findAll();
-
-    return lessonCategories.stream().map(LessonCategoryResponse::new).toList();
-  }
-
-  @Override
-  public LessonCategoryResponse findById(Integer id) {
-    LessonCategory lessonCategory = lessonCategoryRepository.findById(id).orElse(null);
-    if (Objects.isNull(lessonCategory)) {
-      throw new RuntimeException(String.format("lessonCategory id: %s is null", id));
+    @Override
+    public void update(Integer id, LessonCategoryDto lessonCategoryDto) {
+        LessonCategory lessonCategory = lessonCategoryRepository.findById(id).orElse(null);
+        if (lessonCategory != null) {
+            lessonCategory.setName(lessonCategoryDto.getName());
+            lessonCategory.setState(lessonCategoryDto.getState());
+            lessonCategory.setUpdatedAt(Helper.getNowMillisAtUtc());
+        }
     }
-    return new LessonCategoryResponse(lessonCategory);
-  }
 
-  @Override
-  public List<LessonCategoryResponse> findByCourseId(Integer courseId) {
-    List<LessonCategory> lessonCategories = lessonCategoryRepository.findAllByCourseId(courseId);
+    @Override
+    public void delete(Integer id) {
+        lessonCategoryRepository.deleteById(id);
+    }
 
-    return lessonCategories.stream().map(LessonCategoryResponse::new).toList();
-  }
+    @Override
+    public List<LessonCategoryResponse> findAll() {
+        List<LessonCategory> lessonCategories = lessonCategoryRepository.findAll();
 
-  @Override
-  public void updateNew(LessonCategoryDto lessonCategoryDto) {
-    LessonCategory lessonCategory = lessonCategoryRepository.findById(lessonCategoryDto.getId()).orElse(null);
-    lessonCategory.setName(lessonCategoryDto.getName());
-    lessonCategory.setState(lessonCategoryDto.getState());
-    lessonCategory.setUpdatedAt(Helper.getNowMillisAtUtc());
-    lessonCategoryRepository.save(lessonCategory);
-  }
+        return lessonCategories.stream().map(LessonCategoryResponse::new).toList();
+    }
+
+    @Override
+    public LessonCategoryResponse findById(Integer id) {
+        LessonCategory lessonCategory = lessonCategoryRepository.findById(id).orElse(null);
+        if (Objects.isNull(lessonCategory)) {
+            throw new RuntimeException(String.format("lessonCategory id: %s is null", id));
+        }
+        return new LessonCategoryResponse(lessonCategory);
+    }
+
+    @Override
+    public List<LessonCategoryResponse> findByCourseId(Integer courseId) {
+        List<LessonCategory> lessonCategories = lessonCategoryRepository.findAllByCourseId(courseId);
+
+        return lessonCategories.stream().map(LessonCategoryResponse::new).toList();
+    }
+
+    @Override
+    public void updateNew(LessonCategoryDto lessonCategoryDto) {
+        LessonCategory lessonCategory = lessonCategoryRepository.findById(lessonCategoryDto.getId()).orElse(null);
+        lessonCategory.setName(lessonCategoryDto.getName());
+        lessonCategory.setState(lessonCategoryDto.getState());
+        lessonCategory.setUpdatedAt(Helper.getNowMillisAtUtc());
+        lessonCategoryRepository.save(lessonCategory);
+    }
 }

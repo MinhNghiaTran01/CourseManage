@@ -7,7 +7,6 @@ import com.javaweb.course.model.dto.CourseBenefitDTO;
 import com.javaweb.course.repository.CourseBenefitRepository;
 import com.javaweb.course.repository.CourseRepository;
 import com.javaweb.course.service.CourseBenefitService;
-import com.javaweb.course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ public class CourseBenefitServiceImpl implements CourseBenefitService {
     @Override
     public Boolean save(CourseBenefitDTO courseBenefitDTO) {
         Course course = courseRepository.findByCode(courseBenefitDTO.getCodeCourse());
-        if ( course == null) return false;
+        if (course == null) return false;
         try {
             CourseBenefit courseBenefit = new CourseBenefit();
             ObjectMapper objectMapper = new ObjectMapper();
@@ -39,7 +38,7 @@ public class CourseBenefitServiceImpl implements CourseBenefitService {
             courseBenefit.setCourseId(course.getId());
             courseBenefitRepository.save(courseBenefit);
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Error saving course benefit", e);
         }
     }

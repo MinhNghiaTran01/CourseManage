@@ -1,11 +1,9 @@
 package com.javaweb.course.model.dto;
 
-import com.javaweb.course.entity.Role;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder

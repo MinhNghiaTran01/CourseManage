@@ -1,14 +1,11 @@
 package com.javaweb.course.model.dto;
 
-import com.javaweb.course.entity.Role;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Set;
 
 @Builder
 @Data

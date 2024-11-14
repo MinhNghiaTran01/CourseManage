@@ -28,8 +28,8 @@ public class CourseBenefitController {
         CourseBenefitResponse courseBenefitResponse = new CourseBenefitResponse();
         courseBenefitResponse.setBenefits(
                 courseBenefits.stream()
-                        .map(CourseBenefit::getBenefit) // Lấy giá trị `benefit`
-                        .collect(Collectors.toList()) // Chuyển danh sách stream thành List
+                        .map(CourseBenefit::getBenefit)
+                        .collect(Collectors.toList())
         );
 
         return ResponseEntity.ok(courseBenefitResponse);

@@ -20,7 +20,7 @@ public class StudentController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    private ResponseEntity<StudentResponse> findById(@RequestParam Integer id){
+    private ResponseEntity<StudentResponse> findById(@RequestParam Integer id) {
         Student student = studentService.findById(id);
         StudentResponse studentResponse = StudentResponse.builder()
                 .fullName(student.getFullName())
@@ -37,7 +37,7 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id,@RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody StudentDTO studentDTO) {
         Student student = modelMapper.map(studentDTO, Student.class);
         student.setId(id);
         studentService.update(student);

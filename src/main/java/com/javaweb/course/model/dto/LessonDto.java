@@ -2,12 +2,10 @@ package com.javaweb.course.model.dto;
 
 import com.javaweb.course.enums.State;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class LessonDto {
 
-    //  thêm id
     private Integer id;
 
     private String lessonName;

@@ -1,10 +1,9 @@
 package com.javaweb.course.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Entity
@@ -13,7 +12,7 @@ public class Student {
 
     @Id
     @Column(name = "user_id")
-    private Integer id;  // Sử dụng trường userId vừa làm khóa chính, vừa là khóa ngoại
+    private Integer id;  
 
     @Column(name = "description")
     private String description;
@@ -38,7 +37,7 @@ public class Student {
     private String linkedin;
 
     @OneToOne
-    @MapsId // Ánh xạ khóa chính với khóa ngoại (user_id)
+    @MapsId 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ToString.Exclude
     private User user;

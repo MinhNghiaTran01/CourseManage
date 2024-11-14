@@ -20,7 +20,7 @@ public class LessonCategoryController {
     private LessonCategoryService lessonCategoryService;
 
     @GetMapping
-    public ResponseEntity< List<LessonCategoryResponse> > findAll(@RequestParam Integer courseId) {
+    public ResponseEntity<List<LessonCategoryResponse>> findAll(@RequestParam Integer courseId) {
         return ResponseEntity.status(HttpStatus.OK).body(lessonCategoryService.findByCourseId(courseId));
     }
 }

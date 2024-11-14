@@ -1,8 +1,5 @@
 package com.javaweb.course.security.handeler;
 
-import com.javaweb.course.model.dto.MyUserDetails;
-import com.javaweb.course.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;

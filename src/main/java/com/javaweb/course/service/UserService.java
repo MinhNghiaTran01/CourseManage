@@ -2,7 +2,6 @@ package com.javaweb.course.service;
 
 import com.javaweb.course.entity.User;
 import com.javaweb.course.model.dto.UserDTO;
-//import com.javaweb.course.security.oauth2.CustomerOAuth2User;
 
 import javax.validation.Valid;
 import java.util.List;

@@ -2,8 +2,6 @@ package com.javaweb.course.controller.web;
 
 import com.javaweb.course.entity.Comment;
 import com.javaweb.course.entity.User;
-import com.javaweb.course.model.dto.CommentDTO;
-import com.javaweb.course.model.dto.UserDTO;
 import com.javaweb.course.model.respone.CommentResponse;
 import com.javaweb.course.service.CommentService;
 import com.javaweb.course.service.UserService;

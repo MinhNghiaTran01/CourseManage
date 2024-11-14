@@ -6,9 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -46,7 +43,7 @@ public class Lesson {
     @Column(name = "updated_at")
     private Long updatedAt;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String folderId;
 
 }

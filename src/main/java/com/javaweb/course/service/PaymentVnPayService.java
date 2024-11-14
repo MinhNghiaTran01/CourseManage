@@ -9,7 +9,9 @@ import java.io.UnsupportedEncodingException;
 
 public interface PaymentVnPayService {
     public VNPayResponse createVnPayPayment(HttpServletRequest request) throws UnsupportedEncodingException;
+
     public Boolean checkSum(HttpServletRequest request) throws UnsupportedEncodingException;
+
     public ResponseObject<VNPayResponse> checkTransactionState(HttpServletRequest request) throws UnsupportedEncodingException;
 
     Boolean save(PaymentVnpayDTO paymentVnpayDTO);

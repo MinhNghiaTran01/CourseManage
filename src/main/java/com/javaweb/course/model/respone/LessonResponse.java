@@ -3,10 +3,11 @@ package com.javaweb.course.model.respone;
 import com.javaweb.course.entity.Lesson;
 import com.javaweb.course.enums.State;
 import lombok.Data;
-// Thieu id
+
+
 @Data
 public class LessonResponse {
-//  Thêm id , để khi sửa có id mà gửi về
+    
     private Integer id;
 
     private String lessonName;
@@ -18,7 +19,7 @@ public class LessonResponse {
     private String duration;
 
     private Integer courseId;
-//  Thêm lessonCategoryId
+    
     private Integer lessonCategoryId;
 
 

@@ -1,10 +1,7 @@
 package com.javaweb.course.model.respone;
 
-import com.javaweb.course.entity.Role;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Set;
 
 @Builder
 @Data
