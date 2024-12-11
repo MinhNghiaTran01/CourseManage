@@ -18,6 +18,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -69,19 +71,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http = http.authorizeRequests()
-                .antMatchers("/", "/user/auth/login", "/oauth/**"
-                        , "/login", "/auth/register", "/user/**", "/ws/**", "/v1/**", "/admin/**").permitAll()
-                .antMatchers("/products").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                .antMatchers("/admin/manageProduct").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/user/auth/**", "/oauth/**"
+                        , "/ws/**","/home","/user/upload/avatar").permitAll()
+                .antMatchers("/user/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers("/v1/**").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated().and();
 //                .antMatchers("*").permitAll().and();
         // login with form
-        http
-                .formLogin().permitAll()
-                .loginPage("/login")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .and();
+//        http
+//                .formLogin().permitAll()
+//                .loginPage("/user/auth/login")
+//                .usernameParameter("username")
+//                .passwordParameter("password")
+//                .and();
 //            .oauth2Login()
 //            .loginPage("/login")
 //            .userInfoEndpoint()
@@ -90,17 +92,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            .successHandler(oAuth2AuthenticationSuccessHandler);
 
         // Set unauthorized requests exception handler
-//        http = http
-//                .exceptionHandling()
-//                .authenticationEntryPoint(
-//                        (request, response, ex) -> {
-//                            response.sendError(
-//                                    HttpServletResponse.SC_UNAUTHORIZED,
-//                                    ex.getMessage()
-//                            );
-//                        }
-//                )
-//                .and();
+        http = http
+                .exceptionHandling()
+                .authenticationEntryPoint(
+                        (request, response, ex) -> {
+                            response.sendError(
+                                    HttpServletResponse.SC_UNAUTHORIZED,
+                                    ex.getMessage()
+                            );
+                        }
+                )
+                .and();
 
         http.addFilterBefore(jwtTokenFilter,
                 UsernamePasswordAuthenticationFilter.class);

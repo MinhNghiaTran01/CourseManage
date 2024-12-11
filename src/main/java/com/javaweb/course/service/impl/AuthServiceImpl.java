@@ -1,10 +1,13 @@
 package com.javaweb.course.service.impl;
 
+import com.javaweb.course.entity.User;
 import com.javaweb.course.model.dto.MyUserDetails;
 import com.javaweb.course.model.dto.UserDTO;
 import com.javaweb.course.model.respone.AuthResponse;
 import com.javaweb.course.security.jwt.JwtTokenUtil;
 import com.javaweb.course.service.AuthService;
+import com.javaweb.course.service.UserService;
+import org.checkerframework.checker.units.qual.A;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +30,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public ResponseEntity<?> resolveLogin(UserDTO userDTO) {
         try {
@@ -39,8 +45,10 @@ public class AuthServiceImpl implements AuthService {
 
             userDTO = modelMapper.map(myUserDetails.getUser(), UserDTO.class);
 
+            User user = userService.findByUsername(userDTO.getUsername());
+
             String accessToken = jwtUtil.generateAccessToken(userDTO);
-            AuthResponse response = new AuthResponse(userDTO.getId(), userDTO.getUsername(), userDTO.getUsername(), accessToken);
+            AuthResponse response = new AuthResponse(userDTO.getId(), userDTO.getUsername(), userDTO.getUsername(), accessToken,user.getRoles());
 
             return ResponseEntity.ok().body(response);
 

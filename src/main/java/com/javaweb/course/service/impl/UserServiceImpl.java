@@ -1,10 +1,12 @@
 package com.javaweb.course.service.impl;
 
 import com.javaweb.course.entity.Role;
+import com.javaweb.course.entity.Student;
 import com.javaweb.course.entity.User;
 import com.javaweb.course.enums.AuthProvider;
 import com.javaweb.course.model.dto.UserDTO;
 import com.javaweb.course.repository.RoleRepository;
+import com.javaweb.course.repository.StudentRepository;
 import com.javaweb.course.repository.UserRepository;
 import com.javaweb.course.service.UserService;
 import org.apache.log4j.Logger;
@@ -24,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -77,11 +82,14 @@ public class UserServiceImpl implements UserService {
 
     public boolean resgisterAccountGoogle(UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
+        Student student = new Student();
         user.setAuthProvider(AuthProvider.LOCAL);
         user.setRoles(generateRole());
+        student.setUser(user);
         try {
             User savedUser = userRepository.save(user);
-            return savedUser != null;
+            Student savedStudent = studentRepository.save(student);
+            return savedUser != null && savedStudent != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

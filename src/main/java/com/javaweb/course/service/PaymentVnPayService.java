@@ -1,5 +1,6 @@
 package com.javaweb.course.service;
 
+import com.javaweb.course.entity.PaymentVnpay;
 import com.javaweb.course.model.dto.PaymentVnpayDTO;
 import com.javaweb.course.model.respone.ResponseObject;
 import com.javaweb.course.model.respone.VNPayResponse;
@@ -15,5 +16,9 @@ public interface PaymentVnPayService {
     public ResponseObject<VNPayResponse> checkTransactionState(HttpServletRequest request) throws UnsupportedEncodingException;
 
     Boolean save(PaymentVnpayDTO paymentVnpayDTO);
+
+    PaymentVnpay findById(Integer id);
+
+//    List<PaymentVnpayDTO> findAll(Integer userId);
 }
 

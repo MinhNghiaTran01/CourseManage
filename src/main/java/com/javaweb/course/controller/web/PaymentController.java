@@ -1,22 +1,31 @@
 package com.javaweb.course.controller.web;
 
+import com.javaweb.course.entity.PaymentVnpay;
+import com.javaweb.course.entity.RegistrationCourse;
 import com.javaweb.course.model.dto.PaymentVnpayDTO;
 import com.javaweb.course.model.dto.RegistrationCourseDTO;
+import com.javaweb.course.model.respone.RegistrationCourseResponse;
 import com.javaweb.course.model.respone.ResponseObject;
 import com.javaweb.course.model.respone.VNPayResponse;
 import com.javaweb.course.service.PaymentVnPayService;
 import com.javaweb.course.service.RegistrationCourseService;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("user/payment-vnpay")
@@ -31,22 +40,34 @@ public class PaymentController {
 
     private Logger logger = Logger.getLogger(PaymentController.class);
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @GetMapping("/vn-pay")
-    public ResponseObject<VNPayResponse> pay(HttpServletRequest request) throws UnsupportedEncodingException {
+    public ResponseObject<VNPayResponse> pay(HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException {
+        System.out.println("Session ID: " + request.getSession().getId());
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        String emailRegisterCourse = request.getParameter("emailRegisterCourse");
+        Integer courseId = Integer.valueOf(request.getParameter("courseId"));
+        if (userId != null && emailRegisterCourse != null && courseId != null) {
+            session.setAttribute("userId", userId);
+            session.setAttribute("emailRegisterCourse", emailRegisterCourse);
+            session.setAttribute("courseId", courseId);
+        } else {
+            // Xử lý lỗi hoặc trả về thông báo khi thông tin thiếu
+            return new ResponseObject<>(HttpStatus.BAD_REQUEST, "Missing required information", null);
+        }
         return new ResponseObject<>(HttpStatus.OK, "Success", paymentService.createVnPayPayment(request));
     }
 
-    private String paymentMethod;
-    private Long amount;
-    private String paymentState;
-    private String transactionId;
-    private Long paymentDate;
-    private String bankCode;
-    private String orderId;
-
     @Transactional(rollbackOn = Exception.class)
     @GetMapping("/vn-pay-callback")
-    public ResponseObject<?> payCallbackHandler(HttpServletRequest request) throws UnsupportedEncodingException {
+    public ResponseObject<?> payCallbackHandler(HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
+        System.out.println("Session ID: " + request.getSession().getId());
+        String emailRegisterCourse = (String) session.getAttribute("emailRegisterCourse");
+        Integer userId = (Integer) session.getAttribute("userId");
+        Integer courseId = (Integer) session.getAttribute("courseId");
+
         boolean checksum = paymentService.checkSum(request);
         PaymentVnpayDTO paymentVnpayDTO = PaymentVnpayDTO.builder()
                 .paymentMethod(request.getParameter("vnp_CardType"))
@@ -56,12 +77,14 @@ public class PaymentController {
                 .paymentDate(Long.parseLong(request.getParameter("vnp_PayDate")))
                 .bankCode(request.getParameter("vnp_BankCode"))
                 .orderId(request.getParameter("vnp_TxnRef"))
+                .emailRegisterCourse(emailRegisterCourse)
                 .build();
+
         RegistrationCourseDTO registrationCourseDTO = RegistrationCourseDTO.builder()
                 .paymentTransactionId(request.getParameter("vnp_TransactionNo"))
                 .registrationDate(Long.parseLong(request.getParameter("vnp_PayDate")))
-                .userId(Integer.parseInt(request.getParameter("userId")))
-                .courseId(Integer.parseInt(request.getParameter("courseId")))
+                .userId(userId)
+                .courseId(courseId)
                 .build();
 
         VNPayResponse vnPayResponse = VNPayResponse.builder()
@@ -78,6 +101,7 @@ public class PaymentController {
                 .vnpTxnRef(request.getParameter("vnp_TxnRef"))
                 .vnpSecureHash(request.getParameter("vnp_SecureHash"))
                 .code("00")
+                .emailRegisterCourse(emailRegisterCourse)
                 .message("Transaction successful")
                 .build();
 
@@ -87,11 +111,11 @@ public class PaymentController {
         }
 
         if (!paymentService.save(paymentVnpayDTO)) {
-            throw new RuntimeException("Failed to save PaymentVnpayDTO");
+            return new ResponseObject<>(HttpStatus.FAILED_DEPENDENCY, "paymentVnpayDTO failed", null);
         }
 
         if (!registrationCourseService.save(registrationCourseDTO)) {
-            throw new RuntimeException("Failed to save RegistrationCourseDTO");
+            return new ResponseObject<>(HttpStatus.FAILED_DEPENDENCY, "registrationCourseDTO failed", null);
         }
         return new ResponseObject<>(HttpStatus.OK, "Transaction successful", vnPayResponse);
     }
@@ -105,5 +129,24 @@ public class PaymentController {
 //                    , HttpStatus.BAD_REQUEST);
 //        }
 //    }
+
+
+    @GetMapping("payments")
+    public ResponseEntity<List<PaymentVnpayDTO>> findByUserId(@RequestParam Integer userId) {
+        List<RegistrationCourse> registrationCourses = registrationCourseService.findByUserId(userId);
+
+        List<PaymentVnpayDTO> paymentVnpayDTOs = registrationCourses.stream().map(registrationCourse -> {
+            PaymentVnpay paymentVnpay = paymentService.findById(registrationCourse.getPaymentVnpay().getId());
+            return PaymentVnpayDTO.builder().paymentDate(paymentVnpay.getPaymentDate())
+                    .paymentState(paymentVnpay.getPaymentState())
+                    .emailRegisterCourse(paymentVnpay.getEmailRegisterCourse())
+                    .amount(paymentVnpay.getAmount())
+                    .bankCode(paymentVnpay.getBankCode())
+                    .transactionId(paymentVnpay.getTransactionId())
+                    .build();
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(paymentVnpayDTOs);
+    }
 
 }

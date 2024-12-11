@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 
 @RestController
 @RequestMapping("/user/api/google-drive")
@@ -21,8 +23,8 @@ public class GoogleDriveController {
 
     @GetMapping("/add-permission")
     public ResponseEntity<?> addPermission(@RequestParam String fileId,
-                                           @RequestParam String email,
-                                           @RequestParam String role) {
+                                           @RequestParam String role,HttpSession session) {
+        String email = (String) session.getAttribute("emailRegisterCourse");
         return googleDriveService.addPermission(fileId, email, role);
     }
 

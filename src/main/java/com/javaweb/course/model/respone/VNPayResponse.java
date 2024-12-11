@@ -21,5 +21,6 @@ public class VNPayResponse {
     private String vnpTransactionStatus;
     private String vnpTxnRef;
     private String vnpSecureHash;
+    private String emailRegisterCourse;
 
 }

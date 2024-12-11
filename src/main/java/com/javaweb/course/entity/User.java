@@ -60,8 +60,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AuthProvider authProvider;
 
-    private Date create_at;
-    private Date update_at;
+    private Long create_at;
+    private Long update_at;
 
     @Lob
     private byte[] image;

@@ -11,5 +11,6 @@ public class RegistrationCourseResponse {
 
     private int courseId;
     private String courseName;
+    private Integer paymentVnpayId;
 
 }

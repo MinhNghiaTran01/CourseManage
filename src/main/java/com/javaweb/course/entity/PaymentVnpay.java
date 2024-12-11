@@ -13,7 +13,7 @@ public class PaymentVnpay {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
@@ -36,6 +36,12 @@ public class PaymentVnpay {
 
     @Column(name = "bank_code")
     private String bankCode;
+
+    @Column
+    private String emailRegisterCourse;
+
+    @Column
+    private Integer userId;
 
     @OneToOne(mappedBy = "paymentVnpay", cascade = CascadeType.ALL)
     @ToString.Exclude

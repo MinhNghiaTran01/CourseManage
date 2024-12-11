@@ -1,5 +1,6 @@
 package com.javaweb.course.entity;
 
+import com.javaweb.course.enums.State;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +21,9 @@ public class RegistrationCourse {
 
     private Long registrationDate;
 
-    private String state;
+    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
+    private State state;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

@@ -3,6 +3,7 @@ package com.javaweb.course.service.impl;
 
 import com.javaweb.course.entity.Role;
 import com.javaweb.course.entity.User;
+import com.javaweb.course.enums.State;
 import com.javaweb.course.model.dto.MyUserDetails;
 import com.javaweb.course.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
 
+
         Set<Role> roles = user.getRoles();
 
-        if (user == null) {
+        if (user == null||user.getState()== State.DELETED) {
             throw new UsernameNotFoundException("Could not find user");
         }
 

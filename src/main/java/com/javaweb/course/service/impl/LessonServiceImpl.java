@@ -1,5 +1,6 @@
 package com.javaweb.course.service.impl;
 
+import com.google.api.services.drive.Drive;
 import com.javaweb.course.entity.Course;
 import com.javaweb.course.entity.Lesson;
 import com.javaweb.course.entity.LessonCategory;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +26,8 @@ public class LessonServiceImpl implements LessonService {
     @Autowired
     private LessonRepository lessonRepository;
 
+    @Autowired
+    private Drive driveService;
 
     @Autowired
     private CourseRepository courseRepository;
@@ -37,10 +41,31 @@ public class LessonServiceImpl implements LessonService {
 
     }
 
+    public boolean deleteFile(String fileId, Integer id) {
+        try {
+            // Gọi API để xóa file bằng fileId
+            driveService.files().delete(fileId).execute();
+            lessonRepository.deleteById(id);
+            return true; // Thành công
+        } catch (IOException e) {
+            System.err.println("Error while deleting file: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     //  Thêm lessonRepository.deleteById(id);
     @Override
     public void delete(Integer id) {
-        lessonRepository.deleteById(id);
+        try {
+            Lesson lesson = lessonRepository.findById(id).orElse(null);
+            if(lesson != null) {
+                deleteFile(lesson.getFolderId(),id);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -48,6 +73,8 @@ public class LessonServiceImpl implements LessonService {
     public LessonResponse findById(Integer id) {
         return null;
     }
+
+
 
     @Transactional(rollbackFor = Exception.class)
     public void save(LessonDto lessonDto) {
@@ -86,4 +113,6 @@ public class LessonServiceImpl implements LessonService {
         lesson.setLessonName(lessonDto.getLessonName());
         lessonRepository.save(lesson);
     }
+
+
 }

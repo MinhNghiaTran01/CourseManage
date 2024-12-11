@@ -60,4 +60,6 @@ public class RegistrationCourseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RegistrationCourseResponse());
         }
     }
+
+
 }

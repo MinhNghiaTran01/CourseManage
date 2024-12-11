@@ -4,11 +4,12 @@ import com.javaweb.course.enums.State;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "lesson_category")
 @Data
-public class LessonCategory {
+public class LessonCategory{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

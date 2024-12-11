@@ -71,8 +71,6 @@ public class PaymentVnPayServiceImpl implements PaymentVnPayService {
         });
         fields.remove("vnp_SecureHashType");
         fields.remove("vnp_SecureHash");
-        fields.remove("courseId");
-        fields.remove("userId");
         String vnp_SecureHash = request.getParameter("vnp_SecureHash");
         String signValue = VNPayUtil.hashAllFields(fields);
 
@@ -123,4 +121,19 @@ public class PaymentVnPayServiceImpl implements PaymentVnPayService {
             return false;
         }
     }
+
+    @Override
+    public PaymentVnpay findById(Integer id) {
+        try {
+            return paymentVnpayRepository.findById(id).orElse(null);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+//    @Override
+//    public List<PaymentVnpayDTO> findAll(Integer userId) {
+//        List<PaymentVnpay> paymentVnpays = paymentVnpayRepository.findB
+//    }
 }

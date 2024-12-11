@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -52,7 +49,7 @@ public class AuthController {
                 }
                 User user = userService.getUserByUserName(userDTO.getUsername());
                 String accessToken = jwtUtil.generateAccessToken(userDTO);
-                AuthResponse response = new AuthResponse(user.getId(), user.getUsername(), user.getUsername(), accessToken);
+                AuthResponse response = new AuthResponse(user.getId(), user.getUsername(), user.getUsername(), accessToken, user.getRoles());
                 return ResponseEntity.ok().body(response);
             }
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Registration Account Google failed");
@@ -69,7 +66,7 @@ public class AuthController {
             if (success) {
                 User user = userService.getUserByUserName(userDTO.getUsername());
                 String accessToken = jwtUtil.generateAccessToken(userDTO);
-                AuthResponse response = new AuthResponse(user.getId(), user.getUsername(), user.getUsername(), accessToken);
+                AuthResponse response = new AuthResponse(user.getId(), user.getUsername(), user.getUsername(), accessToken,user.getRoles());
                 return ResponseEntity.ok().body(response);
             }
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Registration failed");
