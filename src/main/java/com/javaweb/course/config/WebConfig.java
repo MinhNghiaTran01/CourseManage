@@ -15,7 +15,7 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
 //                        .allowedOriginPatterns("*")
-                        .allowedOrigins("http://localhost:3000", "http://coursems-fe.s3-website-us-east-1.amazonaws.com")
+                        .allowedOrigins("http://localhost:3000", "http://course-management.dattpmars.com")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                         .allowedHeaders("*")
                         .allowCredentials(true);
