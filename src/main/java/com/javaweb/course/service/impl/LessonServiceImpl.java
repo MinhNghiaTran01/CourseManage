@@ -110,7 +110,7 @@ public class LessonServiceImpl implements LessonService {
         lesson.setDuration(lessonDto.getDuration());
         lesson.setState(lessonDto.getState());
         lesson.setUpdatedAt(Helper.getNowMillisAtUtc());
-        lesson.setLessonName(lessonDto.getLessonName());
+//        lesson.setLessonName(lessonDto.getLessonName());
         lessonRepository.save(lesson);
     }
 

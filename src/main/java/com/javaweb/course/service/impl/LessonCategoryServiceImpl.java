@@ -36,9 +36,9 @@ public class LessonCategoryServiceImpl implements LessonCategoryService {
     public void update(Integer id, LessonCategoryDto lessonCategoryDto) {
         LessonCategory lessonCategory = lessonCategoryRepository.findById(id).orElse(null);
         if (lessonCategory != null) {
-            lessonCategory.setName(lessonCategoryDto.getName());
             lessonCategory.setState(lessonCategoryDto.getState());
             lessonCategory.setUpdatedAt(Helper.getNowMillisAtUtc());
+            lessonCategoryRepository.save(lessonCategory);
         }
     }
 
@@ -73,7 +73,6 @@ public class LessonCategoryServiceImpl implements LessonCategoryService {
     @Override
     public void updateNew(LessonCategoryDto lessonCategoryDto) {
         LessonCategory lessonCategory = lessonCategoryRepository.findById(lessonCategoryDto.getId()).orElse(null);
-        lessonCategory.setName(lessonCategoryDto.getName());
         lessonCategory.setState(lessonCategoryDto.getState());
         lessonCategory.setUpdatedAt(Helper.getNowMillisAtUtc());
         lessonCategoryRepository.save(lessonCategory);

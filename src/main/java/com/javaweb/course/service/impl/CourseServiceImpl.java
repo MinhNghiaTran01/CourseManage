@@ -1,6 +1,7 @@
 package com.javaweb.course.service.impl;
 
 import com.javaweb.course.entity.Course;
+import com.javaweb.course.enums.State;
 import com.javaweb.course.model.dto.CourseDto;
 import com.javaweb.course.model.respone.CourseResponse;
 import com.javaweb.course.repository.CourseRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -52,7 +54,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void delete(Integer id) {
-        courseRepository.deleteById(id);
+        Course course = courseRepository.findById(id).orElseThrow();
+        course.setState(State.INACTIVE);
+        courseRepository.save(course);
     }
 
     public List<CourseResponse> findAll() {
@@ -98,7 +102,6 @@ public class CourseServiceImpl implements CourseService {
     public void updateCourse(CourseDto courseDto) throws IOException {
         Course course = courseRepository.findById(courseDto.getId())
                 .orElseThrow(() -> new RuntimeException("Course not found"));
-        course.setCourseName(courseDto.getCourseName());
         course.setDescription(courseDto.getDescription());
         course.setPrice(courseDto.getPrice());
         course.setState(courseDto.getState());
