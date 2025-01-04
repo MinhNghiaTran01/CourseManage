@@ -17,7 +17,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) throws Exception {
-//        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         SpringApplication.run(SpringBootWebApplication.class, args);
     }
 }

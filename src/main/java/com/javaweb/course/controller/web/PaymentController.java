@@ -44,29 +44,17 @@ public class PaymentController {
     private ModelMapper modelMapper;
 
     @GetMapping("/vn-pay")
-    public ResponseObject<VNPayResponse> pay(HttpServletRequest request, HttpSession session) throws UnsupportedEncodingException {
-        System.out.println("Session ID: " + request.getSession().getId());
-        Integer userId = Integer.valueOf(request.getParameter("userId"));
-        String emailRegisterCourse = request.getParameter("emailRegisterCourse");
-        Integer courseId = Integer.valueOf(request.getParameter("courseId"));
-        if (userId != null && emailRegisterCourse != null && courseId != null) {
-            session.setAttribute("userId", userId);
-            session.setAttribute("emailRegisterCourse", emailRegisterCourse);
-            session.setAttribute("courseId", courseId);
-        } else {
-            // Xử lý lỗi hoặc trả về thông báo khi thông tin thiếu
-            return new ResponseObject<>(HttpStatus.BAD_REQUEST, "Missing required information", null);
-        }
+    public ResponseObject<VNPayResponse> pay(HttpServletRequest request) throws UnsupportedEncodingException {
         return new ResponseObject<>(HttpStatus.OK, "Success", paymentService.createVnPayPayment(request));
     }
 
     @Transactional(rollbackOn = Exception.class)
     @GetMapping("/vn-pay-callback")
-    public ResponseObject<?> payCallbackHandler(HttpServletRequest request,HttpSession session) throws UnsupportedEncodingException {
-        System.out.println("Session ID: " + request.getSession().getId());
-        String emailRegisterCourse = (String) session.getAttribute("emailRegisterCourse");
-        Integer userId = (Integer) session.getAttribute("userId");
-        Integer courseId = (Integer) session.getAttribute("courseId");
+    public ResponseObject<?> payCallbackHandler(HttpServletRequest request) throws UnsupportedEncodingException {
+
+        String emailRegisterCourse = request.getParameter("emailRegisterCourse");
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        Integer courseId = Integer.valueOf(request.getParameter("courseId"));
 
         boolean checksum = paymentService.checkSum(request);
         PaymentVnpayDTO paymentVnpayDTO = PaymentVnpayDTO.builder()

@@ -77,12 +77,12 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
     }
 
     @Override
-    public ResponseEntity<?> addPermission(String fileId, String email, String role) {
+    public ResponseEntity<?> addPermission(String fileId, String emailRegisterCourse, String role) {
         try {
             Permission permission = new Permission();
             permission.setType("user");
             permission.setRole(role); 
-            permission.setEmailAddress(email);
+            permission.setEmailAddress(emailRegisterCourse);
 
             
             driveService.permissions().create(fileId, permission)

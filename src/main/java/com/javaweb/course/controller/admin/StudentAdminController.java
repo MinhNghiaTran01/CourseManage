@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ public class StudentAdminController {
         List<StudentResponse> studentResponseList = new ArrayList<>();
         for (Student student : students) {
             User user = student.getUser();
-//            if(user.getState()== State.INACTIVE||user.getState()==State.DELETED) continue;
+            if(user.getState()== State.INACTIVE||user.getState()==State.DELETED) continue;
             Set<Role> roles = user.getRoles();
             StringBuilder roleNameBuilder = new StringBuilder();
             roles.forEach(role -> {
@@ -100,7 +101,7 @@ public class StudentAdminController {
             user.setRoles(roles);
 
             Student existingStudent = studentService.findById(user.getId());
-            if (existingStudent != null) {
+            if (existingStudent == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");
             }
             modelMapper.map(studentDTO, existingStudent);

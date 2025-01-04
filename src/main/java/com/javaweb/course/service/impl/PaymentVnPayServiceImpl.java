@@ -69,6 +69,9 @@ public class PaymentVnPayServiceImpl implements PaymentVnPayService {
                 fields.put(URLEncoder.encode(key, StandardCharsets.US_ASCII), URLEncoder.encode(values[0], StandardCharsets.US_ASCII));
             }
         });
+        fields.remove("courseId");
+        fields.remove("userId");
+        fields.remove("emailRegisterCourse");
         fields.remove("vnp_SecureHashType");
         fields.remove("vnp_SecureHash");
         String vnp_SecureHash = request.getParameter("vnp_SecureHash");
