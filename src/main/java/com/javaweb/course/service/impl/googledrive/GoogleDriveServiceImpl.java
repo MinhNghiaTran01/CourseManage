@@ -153,9 +153,9 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
             driveService.files().delete(fileId).execute();
             return true;
         } catch (IOException e) {
-            System.err.println("Error while deleting file: " + e.getMessage());
+            log.debug("Error while deleting file: " + e.getMessage());
             e.printStackTrace();
-            return false;
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -174,6 +174,27 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
                     .execute();
             log.debug("======updateFolderLessonCategoryName updatedFolder: " + updatedFolder);
             return ResponseEntity.status(HttpStatus.OK).body("Folder renamed to: " + updatedFolder.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Couldn't update folder name");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> updateFileLessonName(String fileId, String newFileLessonName) {
+        try {
+            if (fileId == null || fileId.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid folderId");
+            }
+
+            File fileMetadata = new File();
+            fileMetadata.setName(newFileLessonName);
+
+            File updateFile = driveService.files().update(fileId, fileMetadata)
+                    .setFields("id, name")
+                    .execute();
+            log.debug("======updateFileLessonName updatedFile: " + updateFile);
+            return ResponseEntity.status(HttpStatus.OK).body("Folder renamed to: " + updateFile.getName());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Couldn't update folder name");

@@ -21,4 +21,5 @@ public interface GoogleDriveService {
     boolean deleteFile(String fileId);
 
     ResponseEntity<?> updateFolderLessonCategoryName(String folderId, String newFolderLessonCategoryName);
+    ResponseEntity<?> updateFileLessonName(String fileId, String newFileLessonName);
 }

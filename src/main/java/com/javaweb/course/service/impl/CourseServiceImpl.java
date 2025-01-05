@@ -132,11 +132,6 @@ public class CourseServiceImpl implements CourseService {
             course.setState(courseDto.getState());
         }
         course.setUpdatedAt(Helper.getNowMillisAtUtc());
-        // để khi không thay đổi ảnh trên frontend sẽ k bị null ( các trường khác không cần kiểm tra, vì
-        // ảnh gửi từ frontend về ở dạng chuỗi ảnh base64, không phải file để truyền về
-//        if (courseDto.getFileImage() != null && !courseDto.getFileImage().isEmpty()) {
-//            course.setImage(courseDto.getFileImage().getBytes());
-//        }
         courseRepository.save(course);
     }
 

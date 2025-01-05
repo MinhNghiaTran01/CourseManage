@@ -91,11 +91,17 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public void updates2(LessonDto lessonDto) {
         Lesson lesson = lessonRepository.findById(lessonDto.getId()).orElse(null);
-        lesson.setDescription(lessonDto.getDescription());
-        lesson.setDuration(lessonDto.getDuration());
-        lesson.setState(lessonDto.getState());
+        if(lessonDto.getLessonName()!=null){
+            lesson.setLessonName(lessonDto.getLessonName());
+            googleDriveService.updateFileLessonName(lesson.getFileId(), lesson.getLessonName());
+        }
+        if(lessonDto.getDescription()!=null){
+            lesson.setDescription(lessonDto.getDescription());
+        }
+        if(lessonDto.getState()!=null){
+            lesson.setState(lessonDto.getState());
+        }
         lesson.setUpdatedAt(Helper.getNowMillisAtUtc());
-//        lesson.setLessonName(lessonDto.getLessonName());
         lessonRepository.save(lesson);
     }
 
