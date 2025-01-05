@@ -12,5 +12,11 @@ public interface GoogleDriveService {
 
     ResponseEntity<?> addPermission(String fileId, String email, String role);
 
+    ResponseEntity<?> updateFolderCourseName(String folderId, String newFolderCourseName);
+
+    ResponseEntity<?> deleteFolderById(String folderId);
+
     String getAccessToken() throws IOException;
+
+    boolean deleteFile(String fileId);
 }

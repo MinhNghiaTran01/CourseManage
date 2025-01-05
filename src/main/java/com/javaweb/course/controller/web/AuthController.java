@@ -70,7 +70,7 @@ public class AuthController {
                 return ResponseEntity.ok().body(response);
             }
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Registration failed");
-        } catch (BadCredentialsException ex) {
+        } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }

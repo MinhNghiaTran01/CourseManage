@@ -17,4 +17,5 @@ public class PaymentVnpayDTO {
     private String bankCode;
     private String orderId;
     private String emailRegisterCourse;
+    private Integer userId;
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,15 +25,20 @@ public class CourseBenefitController {
 
     @GetMapping
     public ResponseEntity<CourseBenefitResponse> findByCourseId(@RequestParam("courseId") Integer courseId) {
-        List<CourseBenefit> courseBenefits = courseBenefitService.findByCourseId(courseId);
+        CourseBenefit courseBenefits = courseBenefitService.findByCourseId(courseId);
+        String benefit = courseBenefits.getBenefit();
 
+        List<String> benefitResponse = new ArrayList<>();
+        if(benefit.length()>2) {
+            benefit = benefit.substring(1, benefit.length() - 2);
+            String [] benefits = benefit.split(",");
+            for(String tmp : benefits) {
+                tmp = tmp.trim().substring(1, tmp.length() - 2);
+                benefitResponse.add(tmp);
+            }
+        }
         CourseBenefitResponse courseBenefitResponse = new CourseBenefitResponse();
-        courseBenefitResponse.setBenefits(
-                courseBenefits.stream()
-                        .map(CourseBenefit::getBenefit)
-                        .collect(Collectors.toList())
-        );
-
+        courseBenefitResponse.setBenefits(benefitResponse);
         return ResponseEntity.ok(courseBenefitResponse);
     }
 }

@@ -12,8 +12,8 @@ public class InfoDetailUserDTO {
     private Integer id;
     private String phoneNumber;
     private String address;
-    private Integer totalAmountPaid;
-    private Integer totalCourseRegistered;
+    private Long totalAmountPaid;
+    private Long totalCourseRegistered;
     private String fullName;
     private String username;
     private String password;

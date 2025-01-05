@@ -1,14 +1,17 @@
 package com.javaweb.course.controller.admin;
 
+import com.javaweb.course.entity.Course;
 import com.javaweb.course.model.dto.CourseBenefitDTO;
 import com.javaweb.course.model.dto.CourseDto;
 import com.javaweb.course.model.respone.CourseResponse;
+import com.javaweb.course.repository.CourseRepository;
 import com.javaweb.course.service.CourseBenefitService;
 import com.javaweb.course.service.impl.CourseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -23,6 +26,8 @@ public class CourseAdminController {
 
     @Autowired
     private CourseBenefitService courseBenefitService;
+    @Autowired
+    private CourseRepository courseRepository;
 
     @GetMapping("")
     public List<CourseResponse> findALl() {

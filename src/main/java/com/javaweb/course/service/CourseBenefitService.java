@@ -6,7 +6,7 @@ import com.javaweb.course.model.dto.CourseBenefitDTO;
 import java.util.List;
 
 public interface CourseBenefitService {
-    List<CourseBenefit> findByCourseId(Integer courseId);
+    CourseBenefit findByCourseId(Integer courseId);
 
     Boolean save(CourseBenefitDTO courseBenefitDTO);
 }

@@ -44,6 +44,6 @@ public class Lesson {
     private Long updatedAt;
 
     @Column(nullable = false, unique = true)
-    private String folderId;
+    private String fileId;
 
 }

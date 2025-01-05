@@ -13,8 +13,8 @@ public class StudentResponse {
     private String username;
     private String roles;
     private String description;
-    private Integer totalCourseRegistered;
-    private Integer totalAmountPaid;
+    private Long totalCourseRegistered;
+    private Long totalAmountPaid;
     private String facebook;
     private String linkedin;
     private String github;

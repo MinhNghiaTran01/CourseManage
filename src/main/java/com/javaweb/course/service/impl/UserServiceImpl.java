@@ -9,11 +9,13 @@ import com.javaweb.course.repository.RoleRepository;
 import com.javaweb.course.repository.StudentRepository;
 import com.javaweb.course.repository.UserRepository;
 import com.javaweb.course.service.UserService;
+import com.javaweb.course.untils.Helper;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -66,17 +68,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean userRegister(UserDTO userDTO) {
+        User checkUser = userRepository.findByUsername(userDTO.getUsername());
+        if(checkUser!=null){
+            return false;
+        }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         userDTO.setPassword(encoder.encode(userDTO.getPassword()));
         User user = modelMapper.map(userDTO, User.class);
         user.setAuthProvider(AuthProvider.LOCAL);
+        user.setCreate_at(Helper.getNowMillisAtUtc());
         user.setRoles(generateRole());
+
         try {
             User savedUser = userRepository.save(user);
-            return savedUser != null;
+            Student student = new Student();
+            student.setUser(savedUser);
+            student.setTotalCourseRegistered(0L);
+            student.setTotalAmountPaid(0L);
+            Student savedStudent = studentRepository.save(student);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+           return false;
         }
     }
 

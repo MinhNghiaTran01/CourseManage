@@ -1,25 +1,37 @@
 package com.javaweb.course.service.impl;
 
 import com.javaweb.course.entity.Course;
-import com.javaweb.course.enums.State;
 import com.javaweb.course.model.dto.CourseDto;
 import com.javaweb.course.model.respone.CourseResponse;
+import com.javaweb.course.repository.CourseBenefitRepository;
 import com.javaweb.course.repository.CourseRepository;
+import com.javaweb.course.repository.LessonCategoryRepository;
+import com.javaweb.course.repository.LessonRepository;
 import com.javaweb.course.service.CourseService;
+import com.javaweb.course.service.GoogleDriveService;
 import com.javaweb.course.untils.Helper;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private GoogleDriveService googleDriveService;
+    @Autowired
+    private LessonCategoryRepository lessonCategoryRepository;
+    @Autowired
+    private LessonRepository lessonRepository;
+    @Autowired
+    private CourseBenefitRepository courseBenefitRepository;
 
     @Override
     public void save(CourseDto courseDto) {
@@ -53,10 +65,14 @@ public class CourseServiceImpl implements CourseService {
 //    }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Integer id) {
         Course course = courseRepository.findById(id).orElseThrow();
-        course.setState(State.INACTIVE);
-        courseRepository.save(course);
+        lessonCategoryRepository.deleteAllByCourseId(id);
+        lessonRepository.deleteAllByCourseId(id);
+        courseBenefitRepository.deleteAllByCourseId(id);
+        courseRepository.delete(course);
+        googleDriveService.deleteFolderById(course.getFolderId());
     }
 
     public List<CourseResponse> findAll() {
@@ -102,15 +118,25 @@ public class CourseServiceImpl implements CourseService {
     public void updateCourse(CourseDto courseDto) throws IOException {
         Course course = courseRepository.findById(courseDto.getId())
                 .orElseThrow(() -> new RuntimeException("Course not found"));
-        course.setDescription(courseDto.getDescription());
-        course.setPrice(courseDto.getPrice());
-        course.setState(courseDto.getState());
+        if(courseDto.getCourseName()!=null) {
+            course.setCourseName(courseDto.getCourseName());
+            googleDriveService.updateFolderCourseName(course.getFolderId(),courseDto.getCourseName());
+        }
+        if(courseDto.getDescription()!=null) {
+            course.setCourseName(courseDto.getCourseName());
+        }
+        if(courseDto.getPrice()!=null) {
+            course.setPrice(courseDto.getPrice());
+        }
+        if(courseDto.getState()!=null) {
+            course.setState(courseDto.getState());
+        }
         course.setUpdatedAt(Helper.getNowMillisAtUtc());
         // để khi không thay đổi ảnh trên frontend sẽ k bị null ( các trường khác không cần kiểm tra, vì
         // ảnh gửi từ frontend về ở dạng chuỗi ảnh base64, không phải file để truyền về
-        if (courseDto.getFileImage() != null && !courseDto.getFileImage().isEmpty()) {
-            course.setImage(courseDto.getFileImage().getBytes());
-        }
+//        if (courseDto.getFileImage() != null && !courseDto.getFileImage().isEmpty()) {
+//            course.setImage(courseDto.getFileImage().getBytes());
+//        }
         courseRepository.save(course);
     }
 

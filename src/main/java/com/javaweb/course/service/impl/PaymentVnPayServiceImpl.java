@@ -1,18 +1,28 @@
 package com.javaweb.course.service.impl;
 
 import com.javaweb.course.config.VNPAYConfig;
+import com.javaweb.course.entity.Course;
 import com.javaweb.course.entity.PaymentVnpay;
+import com.javaweb.course.entity.Student;
 import com.javaweb.course.model.dto.PaymentVnpayDTO;
+import com.javaweb.course.model.dto.RegistrationCourseDTO;
 import com.javaweb.course.model.respone.ResponseObject;
 import com.javaweb.course.model.respone.VNPayResponse;
+import com.javaweb.course.repository.CourseRepository;
 import com.javaweb.course.repository.PaymentVnpayRepository;
+import com.javaweb.course.repository.StudentRepository;
 import com.javaweb.course.service.PaymentVnPayService;
+import com.javaweb.course.service.RegistrationCourseService;
 import com.javaweb.course.utils.VNPayUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -32,6 +42,15 @@ public class PaymentVnPayServiceImpl implements PaymentVnPayService {
 
     @Autowired
     private PaymentVnpayRepository paymentVnpayRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
+    private RegistrationCourseService registrationCourseService;
 
     public VNPayResponse createVnPayPayment(HttpServletRequest request) throws UnsupportedEncodingException {
 
@@ -111,6 +130,7 @@ public class PaymentVnPayServiceImpl implements PaymentVnPayService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.MANDATORY)
     public Boolean save(PaymentVnpayDTO paymentVnpayDTO) {
         try {
             PaymentVnpay paymentVnpay = paymentVnpayRepository.findByTransactionId(paymentVnpayDTO.getTransactionId());
@@ -133,6 +153,85 @@ public class PaymentVnPayServiceImpl implements PaymentVnPayService {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+
+
+    @SneakyThrows
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseObject<?> servicePayCallbackHandler(HttpServletRequest request) {
+        String emailRegisterCourse = request.getParameter("emailRegisterCourse");
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        Integer courseId = Integer.valueOf(request.getParameter("courseId"));
+
+        Student student = studentRepository.findById(userId).orElse(null);
+        Course course = courseRepository.findById(courseId).orElse(null);
+        if(student == null) {
+            return new ResponseObject<>(HttpStatus.NOT_FOUND, "Student not found", HttpStatus.NOT_FOUND);
+        }
+
+        if(course == null) {
+            return new ResponseObject<>(HttpStatus.NOT_FOUND, "Course not found", HttpStatus.NOT_FOUND);
+        }
+
+        boolean checksum = checkSum(request);
+        PaymentVnpayDTO paymentVnpayDTO = PaymentVnpayDTO.builder()
+                .userId(userId)
+                .paymentMethod(request.getParameter("vnp_CardType"))
+                .amount(Long.parseLong(request.getParameter("vnp_Amount")))
+                .paymentState(request.getParameter("vnp_TransactionStatus"))
+                .transactionId(request.getParameter("vnp_TransactionNo"))
+                .paymentDate(Long.parseLong(request.getParameter("vnp_PayDate")))
+                .bankCode(request.getParameter("vnp_BankCode"))
+                .orderId(request.getParameter("vnp_TxnRef"))
+                .emailRegisterCourse(emailRegisterCourse)
+                .build();
+
+        RegistrationCourseDTO registrationCourseDTO = RegistrationCourseDTO.builder()
+                .paymentTransactionId(request.getParameter("vnp_TransactionNo"))
+                .registrationDate(Long.parseLong(request.getParameter("vnp_PayDate")))
+                .userId(userId)
+                .courseId(courseId)
+                .build();
+
+
+        VNPayResponse vnPayResponse = VNPayResponse.builder()
+                .vnpAmount(request.getParameter("vnp_Amount"))
+                .vnpBankCode(request.getParameter("vnp_BankCode"))
+                .vnpBankTranNo(request.getParameter("vnp_BankTranNo"))
+                .vnpCardType(request.getParameter("vnp_CardType"))
+                .vnpOrderInfo(request.getParameter("vnp_OrderInfo"))
+                .vnpPayDate(request.getParameter("vnp_PayDate"))
+                .vnpResponseCode(request.getParameter("vnp_ResponseCode"))
+                .vnpTmnCode(request.getParameter("vnp_TmnCode"))
+                .vnpTransactionNo(request.getParameter("vnp_TransactionNo"))
+                .vnpTransactionStatus(request.getParameter("vnp_TransactionStatus"))
+                .vnpTxnRef(request.getParameter("vnp_TxnRef"))
+                .vnpSecureHash(request.getParameter("vnp_SecureHash"))
+                .code("00")
+                .emailRegisterCourse(emailRegisterCourse)
+                .message("Transaction successful")
+                .build();
+
+        checkTransactionState(request);
+
+        if (!checksum) {
+            return new ResponseObject<>(HttpStatus.FAILED_DEPENDENCY, "Checksum failed", null);
+        }
+
+        if (!save(paymentVnpayDTO)) {
+            return new ResponseObject<>(HttpStatus.FAILED_DEPENDENCY, "paymentVnpayDTO failed", null);
+        }
+
+        if (!registrationCourseService.save(registrationCourseDTO)) {
+            return new ResponseObject<>(HttpStatus.FAILED_DEPENDENCY, "registrationCourseDTO failed", null);
+        }
+
+        student.setTotalAmountPaid(course.getPrice() + student.getTotalAmountPaid());
+        student.setTotalCourseRegistered(student.getTotalCourseRegistered() + 1L);
+        studentRepository.save(student);
+        return new ResponseObject<>(HttpStatus.OK, "Transaction successful", vnPayResponse);
     }
 
 //    @Override

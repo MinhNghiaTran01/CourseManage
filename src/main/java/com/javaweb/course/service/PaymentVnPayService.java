@@ -4,6 +4,7 @@ import com.javaweb.course.entity.PaymentVnpay;
 import com.javaweb.course.model.dto.PaymentVnpayDTO;
 import com.javaweb.course.model.respone.ResponseObject;
 import com.javaweb.course.model.respone.VNPayResponse;
+import org.springframework.http.HttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -20,5 +21,6 @@ public interface PaymentVnPayService {
     PaymentVnpay findById(Integer id);
 
 //    List<PaymentVnpayDTO> findAll(Integer userId);
+    ResponseObject<?> servicePayCallbackHandler(HttpServletRequest request);
 }
 

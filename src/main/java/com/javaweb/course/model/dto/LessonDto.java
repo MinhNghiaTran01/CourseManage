@@ -20,17 +20,17 @@ public class LessonDto {
 
     private Integer lessonCategoryId;
 
-    private String folderId;
+    private String fileId;
 
 
     public LessonDto(String lessonName, String description, State state, String duration,
-                     Integer courseId, Integer lessonCategoryId, String folderId) {
+                     Integer courseId, Integer lessonCategoryId, String fileId) {
         this.lessonName = lessonName;
         this.description = description;
         this.state = state;
         this.duration = duration;
         this.courseId = courseId;
         this.lessonCategoryId = lessonCategoryId;
-        this.folderId = folderId;
+        this.fileId = fileId;
     }
 }

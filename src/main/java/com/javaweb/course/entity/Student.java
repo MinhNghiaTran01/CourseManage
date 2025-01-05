@@ -1,5 +1,6 @@
 package com.javaweb.course.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.ToString;
 
@@ -18,10 +19,10 @@ public class Student {
     private String description;
 
     @Column(name = "total_amount_paid")
-    private Integer totalAmountPaid;
+    private Long totalAmountPaid;
 
     @Column(name = "total_course_registered")
-    private Integer totalCourseRegistered;
+    private Long totalCourseRegistered;
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -40,6 +41,7 @@ public class Student {
     @MapsId 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ToString.Exclude
+    @JsonBackReference
     private User user;
 
 

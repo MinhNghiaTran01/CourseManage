@@ -10,4 +10,8 @@ import java.util.List;
 public interface LessonRepository extends JpaRepository<Lesson, Integer> {
 
     List<Lesson> findAllByCourseIdAndLessonCategoryId(int courseId, int lessonCategoryId);
+
+    void deleteAllByCourseId(Integer courseId);
+
+    void deleteAllByLessonCategoryId(Integer lessonCategoryId);
 }

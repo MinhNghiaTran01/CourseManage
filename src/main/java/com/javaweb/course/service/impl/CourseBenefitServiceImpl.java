@@ -22,7 +22,7 @@ public class CourseBenefitServiceImpl implements CourseBenefitService {
     private CourseRepository courseRepository;
 
     @Override
-    public List<CourseBenefit> findByCourseId(Integer courseId) {
+    public CourseBenefit findByCourseId(Integer courseId) {
         return courseBenefitRepository.findByCourseId(courseId);
     }
 
@@ -33,7 +33,7 @@ public class CourseBenefitServiceImpl implements CourseBenefitService {
         try {
             CourseBenefit courseBenefit = new CourseBenefit();
             ObjectMapper objectMapper = new ObjectMapper();
-            String benefitJson = objectMapper.writeValueAsString(courseBenefitDTO);
+            String benefitJson = objectMapper.writeValueAsString(courseBenefitDTO.getBenefits());
             courseBenefit.setBenefit(benefitJson);
             courseBenefit.setCourseId(course.getId());
             courseBenefitRepository.save(courseBenefit);

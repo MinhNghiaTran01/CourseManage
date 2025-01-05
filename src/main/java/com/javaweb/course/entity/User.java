@@ -1,13 +1,13 @@
 package com.javaweb.course.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.javaweb.course.enums.AuthProvider;
 import com.javaweb.course.enums.State;
 import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,6 +51,7 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     @ToString.Exclude
+    @JsonManagedReference
     private Student student;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -61,6 +62,7 @@ public class User {
     private AuthProvider authProvider;
 
     private Long create_at;
+
     private Long update_at;
 
     @Lob

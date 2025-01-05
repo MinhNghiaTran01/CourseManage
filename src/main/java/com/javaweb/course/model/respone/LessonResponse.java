@@ -23,7 +23,7 @@ public class LessonResponse {
     private Integer lessonCategoryId;
 
 
-    private String folderId;
+    private String fileId;
 
     public LessonResponse(Lesson lesson) {
         this.lessonName = lesson.getLessonName();
@@ -33,6 +33,6 @@ public class LessonResponse {
         this.courseId = lesson.getCourseId();
         this.id = lesson.getId();
         this.lessonCategoryId = lesson.getLessonCategoryId();
-        this.folderId = lesson.getFolderId();
+        this.fileId = lesson.getFileId();
     }
 }

@@ -5,10 +5,13 @@ import com.javaweb.course.enums.State;
 import com.javaweb.course.model.dto.LessonCategoryDto;
 import com.javaweb.course.model.respone.LessonCategoryResponse;
 import com.javaweb.course.repository.LessonCategoryRepository;
+import com.javaweb.course.repository.LessonRepository;
+import com.javaweb.course.service.GoogleDriveService;
 import com.javaweb.course.service.LessonCategoryService;
 import com.javaweb.course.untils.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +21,11 @@ public class LessonCategoryServiceImpl implements LessonCategoryService {
 
     @Autowired
     private LessonCategoryRepository lessonCategoryRepository;
+    @Autowired
+    private LessonRepository lessonRepository;
+
+    @Autowired
+    private GoogleDriveService googleDriveService;
 
     @Override
     public void save(LessonCategoryDto lessonCategoryDto) {
@@ -43,8 +51,12 @@ public class LessonCategoryServiceImpl implements LessonCategoryService {
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
+        LessonCategory lessonCategory = lessonCategoryRepository.findById(id).orElse(null);
         lessonCategoryRepository.deleteById(id);
+        lessonRepository.deleteAllByLessonCategoryId(id);
+        googleDriveService.deleteFolderById(lessonCategory.getFolderId());
     }
 
     @Override

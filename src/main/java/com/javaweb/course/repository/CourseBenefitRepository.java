@@ -9,5 +9,9 @@ import java.util.List;
 @Repository
 public interface CourseBenefitRepository extends JpaRepository<CourseBenefit, Integer> {
 
-    List<CourseBenefit> findByCourseId(Integer courseId);
+    CourseBenefit findByCourseId(Integer courseId);
+
+    void deleteAllByCourseId(Integer courseId);
+
+
 }

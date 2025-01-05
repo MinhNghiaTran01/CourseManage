@@ -12,8 +12,8 @@ public class StudentDTO {
     private String phoneNumber;
     private String address;
     private String description;
-    private Integer totalAmountPaid;
-    private Integer totalCourseRegistered;
+    private Long totalAmountPaid;
+    private Long totalCourseRegistered;
     private String username;
     private List<String> roles;
     private String facebook;

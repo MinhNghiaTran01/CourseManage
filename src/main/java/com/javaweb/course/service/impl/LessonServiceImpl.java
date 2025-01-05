@@ -9,6 +9,7 @@ import com.javaweb.course.model.respone.LessonResponse;
 import com.javaweb.course.repository.CourseRepository;
 import com.javaweb.course.repository.LessonCategoryRepository;
 import com.javaweb.course.repository.LessonRepository;
+import com.javaweb.course.service.GoogleDriveService;
 import com.javaweb.course.service.LessonService;
 import com.javaweb.course.untils.Helper;
 import org.modelmapper.ModelMapper;
@@ -27,7 +28,7 @@ public class LessonServiceImpl implements LessonService {
     private LessonRepository lessonRepository;
 
     @Autowired
-    private Drive driveService;
+    private GoogleDriveService googleDriveService;
 
     @Autowired
     private CourseRepository courseRepository;
@@ -41,26 +42,15 @@ public class LessonServiceImpl implements LessonService {
 
     }
 
-    public boolean deleteFile(String fileId, Integer id) {
-        try {
-            // Gọi API để xóa file bằng fileId
-            driveService.files().delete(fileId).execute();
-            lessonRepository.deleteById(id);
-            return true; // Thành công
-        } catch (IOException e) {
-            System.err.println("Error while deleting file: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     //  Thêm lessonRepository.deleteById(id);
     @Override
+    @Transactional
     public void delete(Integer id) {
         try {
             Lesson lesson = lessonRepository.findById(id).orElse(null);
             if(lesson != null) {
-                deleteFile(lesson.getFolderId(),id);
+                lessonRepository.deleteById(id);
+                googleDriveService.deleteFile(lesson.getFileId());
             }
 
         } catch (Exception e) {
@@ -68,13 +58,10 @@ public class LessonServiceImpl implements LessonService {
         }
     }
 
-
     @Override
     public LessonResponse findById(Integer id) {
         return null;
     }
-
-
 
     @Transactional(rollbackFor = Exception.class)
     public void save(LessonDto lessonDto) {
@@ -87,8 +74,6 @@ public class LessonServiceImpl implements LessonService {
         if (Objects.isNull(lessonCategory)) {
             throw new RuntimeException(String.format("lessonCategory has id: %s not found", lessonDto.getLessonCategoryId()));
         }
-
-//        String videoUrl = course.getCourseName() + "/" + lessonCategory.getName() + "/" + lessonDto.getLessonName() + '.' + file.getOriginalFilename();
 
         Lesson lesson = modelMapper.map(lessonDto, Lesson.class);
         lesson.setCreatedAt(Helper.getNowMillisAtUtc());

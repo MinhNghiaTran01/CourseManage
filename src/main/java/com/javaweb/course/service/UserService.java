@@ -2,6 +2,7 @@ package com.javaweb.course.service;
 
 import com.javaweb.course.entity.User;
 import com.javaweb.course.model.dto.UserDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.List;
 
 public interface UserService {
 //    public void processOAuth2PostLogin(CustomerOAuth2User oauthUser);
-
     public boolean userRegister(@Valid UserDTO userDTO);
 
     public User getUserByUserName(String username);

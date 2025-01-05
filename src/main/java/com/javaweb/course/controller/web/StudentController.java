@@ -38,8 +38,28 @@ public class StudentController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody StudentDTO studentDTO) {
-        Student student = modelMapper.map(studentDTO, Student.class);
-        student.setId(id);
+        Student student = studentService.findById(id);
+        if(studentDTO.getFullName() != null) {
+            student.setFullName(studentDTO.getFullName());
+        }
+        if(studentDTO.getFacebook() != null) {
+            student.setFacebook(studentDTO.getFacebook());
+        }
+        if (studentDTO.getGithub() != null) {
+            student.setGithub(studentDTO.getGithub());
+        }
+        if(studentDTO.getLinkedin() != null) {
+            student.setLinkedin(studentDTO.getLinkedin());
+        }
+        if(studentDTO.getDescription() != null) {
+            student.setDescription(studentDTO.getDescription());
+        }
+        if(studentDTO.getAddress() != null) {
+            student.setAddress(studentDTO.getAddress());
+        }
+        if(studentDTO.getPhoneNumber() != null) {
+            student.setPhoneNumber(studentDTO.getPhoneNumber());
+        }
         studentService.update(student);
         return ResponseEntity.status(HttpStatus.OK).body(student);
     }
