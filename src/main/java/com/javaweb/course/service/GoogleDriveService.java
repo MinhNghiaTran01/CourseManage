@@ -19,4 +19,6 @@ public interface GoogleDriveService {
     String getAccessToken() throws IOException;
 
     boolean deleteFile(String fileId);
+
+    ResponseEntity<?> updateFolderLessonCategoryName(String folderId, String newFolderLessonCategoryName);
 }

@@ -158,4 +158,25 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
             return false;
         }
     }
+
+    @Override
+    public ResponseEntity<?> updateFolderLessonCategoryName(String folderId, String newFolderLessonCategoryName) {
+        try {
+            if (folderId == null || folderId.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid folderId");
+            }
+
+            File fileMetadata = new File();
+            fileMetadata.setName(newFolderLessonCategoryName);
+
+            File updatedFolder = driveService.files().update(folderId, fileMetadata)
+                    .setFields("id, name")
+                    .execute();
+            log.debug("======updateFolderLessonCategoryName updatedFolder: " + updatedFolder);
+            return ResponseEntity.status(HttpStatus.OK).body("Folder renamed to: " + updatedFolder.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Couldn't update folder name");
+        }
+    }
 }

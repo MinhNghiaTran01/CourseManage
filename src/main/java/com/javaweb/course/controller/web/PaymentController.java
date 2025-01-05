@@ -60,14 +60,14 @@ public class PaymentController {
     @GetMapping("/vn-pay-callback")
     public ResponseObject<?> payCallbackHandler(HttpServletRequest request) throws UnsupportedEncodingException {
 //
-            return paymentService.servicePayCallbackHandler(request);
+        return paymentService.servicePayCallbackHandler(request);
 //        String emailRegisterCourse = request.getParameter("emailRegisterCourse");
 //        Integer userId = Integer.valueOf(request.getParameter("userId"));
 //        Integer courseId = Integer.valueOf(request.getParameter("courseId"));
 //
 //        Student student = studentRepository.findById(userId).orElse(null);
 //        Course course = courseRepository.findById(courseId).orElse(null);
-//        if(student == null) {
+//        if(student == null) {j
 //            return new ResponseObject<>(HttpStatus.NOT_FOUND, "Student not found", HttpStatus.NOT_FOUND);
 //        }
 //

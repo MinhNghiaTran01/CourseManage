@@ -86,7 +86,9 @@ public class LessonCategoryServiceImpl implements LessonCategoryService {
     public void updateNew(LessonCategoryDto lessonCategoryDto) {
         LessonCategory lessonCategory = lessonCategoryRepository.findById(lessonCategoryDto.getId()).orElse(null);
         lessonCategory.setState(lessonCategoryDto.getState());
+        lessonCategory.setName(lessonCategoryDto.getName());
         lessonCategory.setUpdatedAt(Helper.getNowMillisAtUtc());
+        googleDriveService.updateFolderLessonCategoryName(lessonCategory.getFolderId(), lessonCategoryDto.getName());
         lessonCategoryRepository.save(lessonCategory);
     }
 }
