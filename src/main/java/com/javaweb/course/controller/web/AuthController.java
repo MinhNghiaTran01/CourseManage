@@ -45,7 +45,7 @@ public class AuthController {
                 boolean isRegisterd = userService.checkRegisterd(userDTO);
 
                 if (!isRegisterd) {
-                    userService.resgisterAccountGoogle(userDTO);
+                    userService.resgisterAccountGoogle(userDTO,profileDTO.getName());
                 }
                 User user = userService.getUserByUserName(userDTO.getUsername());
                 String accessToken = jwtUtil.generateAccessToken(userDTO);

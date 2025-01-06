@@ -8,6 +8,7 @@ import lombok.Data;
 @Builder
 public class CommentResponse {
     private String userName;
+    private String fullName;
     private byte[] image;
     private String comment;
     private Long createdAt;

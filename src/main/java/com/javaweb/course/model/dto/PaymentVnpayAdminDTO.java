@@ -2,13 +2,12 @@ package com.javaweb.course.model.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
-public class PaymentVnpayDTO {
+public class PaymentVnpayAdminDTO {
     private String paymentMethod;
     private Long amount;
     private String paymentState;

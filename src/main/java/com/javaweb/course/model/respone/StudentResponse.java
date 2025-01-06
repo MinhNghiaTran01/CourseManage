@@ -12,6 +12,7 @@ public class StudentResponse {
     private String fullName;
     private String username;
     private String roles;
+    private String state;
     private String description;
     private Long totalCourseRegistered;
     private Long totalAmountPaid;

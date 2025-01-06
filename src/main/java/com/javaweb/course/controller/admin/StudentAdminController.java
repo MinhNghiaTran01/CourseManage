@@ -39,7 +39,7 @@ public class StudentAdminController {
 
     @GetMapping
     public ResponseEntity<List<StudentResponse>> getAll() {
-        List<Student> students = studentService.getAll();
+            List<Student> students = studentService.getAll();
         List<StudentResponse> studentResponseList = new ArrayList<>();
         for (Student student : students) {
             User user = student.getUser();
@@ -64,6 +64,7 @@ public class StudentAdminController {
                     .totalCourseRegistered(student.getTotalCourseRegistered())
                     .username(user.getUsername() != null ? user.getUsername() : "")
                     .roles(roleName)
+                    .state(String.valueOf(user.getState()))
                     .build();
             studentResponseList.add(studentResponse);
 

@@ -14,7 +14,7 @@ public interface UserService {
 
     public User getUserByUserName(String username);
 
-    public boolean resgisterAccountGoogle(UserDTO userDTO);
+    public boolean resgisterAccountGoogle(UserDTO userDTO, String fullName);
 
     public boolean checkRegisterd(UserDTO userDTO);
 

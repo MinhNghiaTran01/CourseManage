@@ -29,6 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -232,6 +233,11 @@ public class PaymentVnPayServiceImpl implements PaymentVnPayService {
         student.setTotalCourseRegistered(student.getTotalCourseRegistered() + 1L);
         studentRepository.save(student);
         return new ResponseObject<>(HttpStatus.OK, "Transaction successful", vnPayResponse);
+    }
+
+    @Override
+    public List<PaymentVnpay> findAll() {
+        return paymentVnpayRepository.findAll();
     }
 
 //    @Override

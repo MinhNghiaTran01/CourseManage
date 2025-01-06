@@ -93,12 +93,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public boolean resgisterAccountGoogle(UserDTO userDTO) {
+    public boolean resgisterAccountGoogle(UserDTO userDTO, String fullName) {
         User user = modelMapper.map(userDTO, User.class);
         Student student = new Student();
-        user.setAuthProvider(AuthProvider.LOCAL);
+        user.setAuthProvider(AuthProvider.GOOGLE);
         user.setRoles(generateRole());
+        user.setCreate_at(Helper.getNowMillisAtUtc());
         student.setUser(user);
+        student.setFullName(fullName);
+        student.setTotalCourseRegistered(0L);
+        student.setTotalAmountPaid(0L);
         try {
             User savedUser = userRepository.save(user);
             Student savedStudent = studentRepository.save(student);

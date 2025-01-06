@@ -1,5 +1,6 @@
 package com.javaweb.course.model.dto;
 
+import com.javaweb.course.enums.State;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,4 +20,5 @@ public class StudentDTO {
     private String facebook;
     private String linkedin;
     private String github;
+    private State state;
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public interface PaymentVnPayService {
     public VNPayResponse createVnPayPayment(HttpServletRequest request) throws UnsupportedEncodingException;
@@ -22,5 +23,7 @@ public interface PaymentVnPayService {
 
 //    List<PaymentVnpayDTO> findAll(Integer userId);
     ResponseObject<?> servicePayCallbackHandler(HttpServletRequest request);
+
+    List<PaymentVnpay> findAll();
 }
 
