@@ -43,7 +43,7 @@ public class StudentAdminController {
         List<StudentResponse> studentResponseList = new ArrayList<>();
         for (Student student : students) {
             User user = student.getUser();
-            if(user.getState()== State.INACTIVE||user.getState()==State.DELETED) continue;
+//            if(user.getState()== State.INACTIVE||user.getState()==State.DELETED) continue;
             Set<Role> roles = user.getRoles();
             StringBuilder roleNameBuilder = new StringBuilder();
             roles.forEach(role -> {
@@ -100,7 +100,7 @@ public class StudentAdminController {
 
             User user = userService.findByUsername(studentDTO.getUsername());
             user.setRoles(roles);
-
+            user.setState(studentDTO.getState());
             Student existingStudent = studentService.findById(user.getId());
             if (existingStudent == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");

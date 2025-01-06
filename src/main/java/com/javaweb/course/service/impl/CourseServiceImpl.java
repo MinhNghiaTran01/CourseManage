@@ -1,6 +1,7 @@
 package com.javaweb.course.service.impl;
 
 import com.javaweb.course.entity.Course;
+import com.javaweb.course.enums.State;
 import com.javaweb.course.model.dto.CourseDto;
 import com.javaweb.course.model.respone.CourseResponse;
 import com.javaweb.course.repository.CourseBenefitRepository;
@@ -11,11 +12,13 @@ import com.javaweb.course.service.CourseService;
 import com.javaweb.course.service.GoogleDriveService;
 import com.javaweb.course.untils.Helper;
 import lombok.SneakyThrows;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,6 +35,8 @@ public class CourseServiceImpl implements CourseService {
     private LessonRepository lessonRepository;
     @Autowired
     private CourseBenefitRepository courseBenefitRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public void save(CourseDto courseDto) {
@@ -77,8 +82,13 @@ public class CourseServiceImpl implements CourseService {
 
     public List<CourseResponse> findAll() {
         List<Course> courses = courseRepository.findAll();
-
-        return courses.stream().map(CourseResponse::new).toList();
+        List<CourseResponse> courseResponses = new ArrayList<>();
+        for(Course course : courses) {
+            if(course.getState()==State.INACTIVE) continue;
+            CourseResponse courseResponse = new CourseResponse(course);
+            courseResponses.add(courseResponse);
+        }
+        return courseResponses;
     }
 
     @Override
