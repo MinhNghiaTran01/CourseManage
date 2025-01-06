@@ -91,6 +91,17 @@ public class CourseServiceImpl implements CourseService {
         return courseResponses;
     }
 
+    public List<CourseResponse> findAllAndImage() {
+        List<Course> courses = courseRepository.findAll();
+        List<CourseResponse> courseResponses = new ArrayList<>();
+        for(Course course : courses) {
+            CourseResponse courseResponse = new CourseResponse(course);
+            courseResponses.add(courseResponse);
+        }
+        return courseResponses;
+    }
+
+
     @Override
     public CourseResponse findById(Integer id) {
         Course course = courseRepository.findById(id).orElse(null);
@@ -133,7 +144,7 @@ public class CourseServiceImpl implements CourseService {
             googleDriveService.updateFolderCourseName(course.getFolderId(),courseDto.getCourseName());
         }
         if(courseDto.getDescription()!=null) {
-            course.setCourseName(courseDto.getCourseName());
+            course.setDescription(courseDto.getDescription());
         }
         if(courseDto.getPrice()!=null) {
             course.setPrice(courseDto.getPrice());

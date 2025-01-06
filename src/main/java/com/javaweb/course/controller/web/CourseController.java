@@ -1,6 +1,7 @@
 package com.javaweb.course.controller.web;
 
 import com.javaweb.course.entity.Course;
+import com.javaweb.course.enums.State;
 import com.javaweb.course.model.respone.CourseResponse;
 import com.javaweb.course.service.CourseService;
 import org.modelmapper.ModelMapper;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,9 +26,15 @@ public class CourseController {
     @GetMapping("/search")
     public ResponseEntity<List<CourseResponse>> findByCourseNameContainingIgnoreCase(@RequestParam String courseName) {
         List<Course> courses = courseService.findByCourseNameLikeIgnoreCase(courseName);
-        List<CourseResponse> courseResponses = courses.stream()
-                .map(course -> modelMapper.map(course, CourseResponse.class))
-                .collect(Collectors.toList());
+//        List<CourseResponse> courseResponses = courses.stream()
+//                .map(course -> modelMapper.map(course, CourseResponse.class))
+//                .collect(Collectors.toList());
+        List<CourseResponse> courseResponses = new ArrayList<>();
+        for(Course course : courses) {
+            if(course.getState()== State.INACTIVE) continue;
+            CourseResponse courseResponse = modelMapper.map(course, CourseResponse.class);
+            courseResponses.add(courseResponse);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(courseResponses);
     }
 

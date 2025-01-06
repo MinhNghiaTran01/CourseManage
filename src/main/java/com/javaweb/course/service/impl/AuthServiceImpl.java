@@ -1,6 +1,7 @@
 package com.javaweb.course.service.impl;
 
 import com.javaweb.course.entity.User;
+import com.javaweb.course.enums.State;
 import com.javaweb.course.model.dto.MyUserDetails;
 import com.javaweb.course.model.dto.UserDTO;
 import com.javaweb.course.model.respone.AuthResponse;
@@ -44,8 +45,12 @@ public class AuthServiceImpl implements AuthService {
             MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
 
             userDTO = modelMapper.map(myUserDetails.getUser(), UserDTO.class);
-
             User user = userService.findByUsername(userDTO.getUsername());
+
+            if(user.getState()== State.INACTIVE){
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("Tài khoản của bạn đã bị khóa");
+            }
 
             String accessToken = jwtUtil.generateAccessToken(userDTO);
             AuthResponse response = new AuthResponse(userDTO.getId(), userDTO.getUsername(), userDTO.getUsername(), accessToken,user.getRoles());
@@ -53,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
             return ResponseEntity.ok().body(response);
 
         } catch (BadCredentialsException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Tài khoản hoặc mật khẩu không đúng");
         }
     }
 }

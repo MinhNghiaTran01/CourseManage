@@ -1,6 +1,8 @@
 package com.javaweb.course.controller.web;
 
+import com.javaweb.course.entity.Course;
 import com.javaweb.course.entity.RegistrationCourse;
+import com.javaweb.course.enums.State;
 import com.javaweb.course.model.respone.CourseResponse;
 import com.javaweb.course.model.respone.RegistrationCourseResponse;
 import com.javaweb.course.service.CourseService;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,9 +39,15 @@ public class RegistrationCourseController {
     @GetMapping("")
     public ResponseEntity<List<CourseResponse>> findByUserId(@RequestParam Integer userId) {
         List<RegistrationCourse> registrationCourses = registrationCourseService.findByUserId(userId);
-        List<CourseResponse> courseResponses = (List<CourseResponse>) registrationCourses.stream()
-                .map(registrationCourse -> courseService.findById(registrationCourse.getCourse().getId()))
-                .collect(Collectors.toList());
+        List<CourseResponse> courseResponses = new ArrayList<>();
+//        List<CourseResponse> courseResponses = (List<CourseResponse>) registrationCourses.stream()
+//                .map(registrationCourse -> courseService.findById(registrationCourse.getCourse().getId()))
+//                .collect(Collectors.toList());
+        for(RegistrationCourse registrationCourse : registrationCourses){
+            CourseResponse courseResponse = courseService.findById(registrationCourse.getCourse().getId());
+            if(courseResponse.getState()== State.INACTIVE) continue;
+            courseResponses.add(courseResponse);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(courseResponses);
     }
 

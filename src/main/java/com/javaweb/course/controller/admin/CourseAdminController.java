@@ -70,7 +70,7 @@ public class CourseAdminController {
 
     @GetMapping("/s2")
     public List<CourseResponse> findALlAndImage() {
-        return courseServiceImpl.findAll();
+        return courseServiceImpl.findAllAndImage();
     }
 
     @PatchMapping(value = "/s2", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
