@@ -15,7 +15,7 @@ public interface PaymentVnPayService {
 
     public Boolean checkSum(HttpServletRequest request) throws UnsupportedEncodingException;
 
-    public ResponseObject<VNPayResponse> checkTransactionState(HttpServletRequest request) throws UnsupportedEncodingException;
+    boolean checkTransactionState(HttpServletRequest request) throws UnsupportedEncodingException;
 
     Boolean save(PaymentVnpayDTO paymentVnpayDTO);
 

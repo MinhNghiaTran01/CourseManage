@@ -10,7 +10,7 @@ public interface GoogleDriveService {
 
     ResponseEntity<?> getWebViewLink(String fileId);
 
-    ResponseEntity<?> addPermission(String fileId, String email, String role);
+    ResponseEntity<?> addPermission(String folderId, String email, String role);
 
     ResponseEntity<?> updateFolderCourseName(String folderId, String newFolderCourseName);
 

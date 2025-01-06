@@ -97,36 +97,22 @@ public class PaymentVnPayServiceImpl implements PaymentVnPayService {
         String vnp_SecureHash = request.getParameter("vnp_SecureHash");
         String signValue = VNPayUtil.hashAllFields(fields);
 
-        if (signValue.equals(vnp_SecureHash)) {
-            // Kiểm tra trạng thái giao dịch
+        boolean paymentState = checkTransactionState(request);
+        if (signValue.equals(vnp_SecureHash)&&paymentState) {
             return true;
-
         } else {
             return false;
         }
     }
 
-    public ResponseObject<VNPayResponse> checkTransactionState(HttpServletRequest request) throws UnsupportedEncodingException {
+    public boolean checkTransactionState(HttpServletRequest request) throws UnsupportedEncodingException {
         String transactionStatus = request.getParameter("vnp_TransactionStatus");
         if ("00".equals(transactionStatus)) {
-            return new ResponseObject<>(HttpStatus.OK, "Success", VNPayResponse.builder()
-                    .message("Thành công")
-                    .vnpAmount(request.getParameter("vnp_Amount"))
-                    .vnpBankCode(request.getParameter("vnp_BankCode"))
-                    .vnpBankTranNo(request.getParameter("vnp_BankTranNo"))
-                    .vnpCardType(request.getParameter("vnp_CardType"))
-                    .vnpOrderInfo(request.getParameter("vnp_OrderInfo"))
-                    .vnpPayDate(request.getParameter("vnp_PayDate"))
-                    .vnpResponseCode(request.getParameter("vnp_ResponseCode"))
-                    .vnpTransactionNo(request.getParameter("vnp_TransactionNo"))
-                    .vnpTransactionStatus(request.getParameter("vnp_TransactionStatus"))
-                    .vnpSecureHash(request.getParameter("vnp_SecureHash"))
-                    .vnpTmnCode(request.getParameter("vnp_TmnCode"))
-                    .vnpTxnRef(request.getParameter("vnp_TxnRef"))
-                    .build());
+            return true;
         } else {
+            return false;
             // Giao dịch không thành công
-            return new ResponseObject<>(HttpStatus.BAD_REQUEST, "Transaction Failed", null);
+//            return new ResponseObject<>(HttpStatus.BAD_REQUEST, "Transaction Failed", null);
         }
     }
 
@@ -214,8 +200,6 @@ public class PaymentVnPayServiceImpl implements PaymentVnPayService {
                 .emailRegisterCourse(emailRegisterCourse)
                 .message("Transaction successful")
                 .build();
-
-        checkTransactionState(request);
 
         if (!checksum) {
             return new ResponseObject<>(HttpStatus.FAILED_DEPENDENCY, "Checksum failed", null);

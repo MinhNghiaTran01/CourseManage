@@ -33,12 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
-//    @Autowired
-//    private CustomerOAuth2UserService oauth2UserService;
-
-//    @Autowired
-//    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-
     @Autowired
     private LocalLoginSuccessHandler databaseLoginSuccessHandler;
 
@@ -73,23 +67,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http = http.authorizeRequests()
                 .antMatchers("/user/auth/**", "/oauth/**"
                         , "/ws/**","/home","/user/upload/avatar").permitAll()
-                .antMatchers("/user/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers("/user/**").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
                 .antMatchers("/v1/**").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated().and();
 //                .antMatchers("*").permitAll().and();
-        // login with form
-//        http
-//                .formLogin().permitAll()
-//                .loginPage("/user/auth/login")
-//                .usernameParameter("username")
-//                .passwordParameter("password")
-//                .and();
-//            .oauth2Login()
-//            .loginPage("/login")
-//            .userInfoEndpoint()
-//            .userService(oauth2UserService)
-//            .and()
-//            .successHandler(oAuth2AuthenticationSuccessHandler);
 
         // Set unauthorized requests exception handler
         http = http

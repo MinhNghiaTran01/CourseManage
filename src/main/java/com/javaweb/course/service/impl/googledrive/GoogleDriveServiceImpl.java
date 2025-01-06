@@ -81,7 +81,7 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
     }
 
     @Override
-    public ResponseEntity<?> addPermission(String fileId, String emailRegisterCourse, String role) {
+    public ResponseEntity<?> addPermission(String folderId, String emailRegisterCourse, String role) {
         try {
             Permission permission = new Permission();
             permission.setType("user");
@@ -89,10 +89,10 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
             permission.setEmailAddress(emailRegisterCourse);
 
 
-            driveService.permissions().create(fileId, permission)
+            driveService.permissions().create(folderId, permission)
                     .setSendNotificationEmail(true)
                     .execute();
-            return ResponseEntity.status(HttpStatus.CREATED).body("Permission added successfully to file ID: " + fileId);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Permission added successfully to file ID: " + folderId);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Failed to add permission: " + e.getMessage());

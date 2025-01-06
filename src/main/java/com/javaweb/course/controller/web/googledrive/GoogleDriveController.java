@@ -22,9 +22,9 @@ public class GoogleDriveController {
     }
 
     @GetMapping("/add-permission")
-    public ResponseEntity<?> addPermission(@RequestParam String fileId,
+    public ResponseEntity<?> addPermission(@RequestParam String folderId,
                                            @RequestParam String role,@RequestParam String emailRegisterCourse) {
-        return googleDriveService.addPermission(fileId, emailRegisterCourse, role);
+        return googleDriveService.addPermission(folderId, emailRegisterCourse, role);
     }
 
     @PostMapping("/create-folder-course")
