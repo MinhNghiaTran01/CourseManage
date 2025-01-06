@@ -5,7 +5,9 @@ import com.javaweb.course.entity.Student;
 import com.javaweb.course.entity.User;
 import com.javaweb.course.enums.State;
 import com.javaweb.course.model.dto.StudentDTO;
+import com.javaweb.course.model.dto.UserDTO;
 import com.javaweb.course.model.respone.StudentResponse;
+import com.javaweb.course.repository.StudentRepository;
 import com.javaweb.course.service.RoleService;
 import com.javaweb.course.service.StudentService;
 import com.javaweb.course.service.UserService;
@@ -15,10 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequestMapping("/v1/admin/student")
@@ -32,9 +31,13 @@ public class StudentAdminController {
     private StudentService studentService;
 
     @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
     @Autowired
     private RoleService roleService;
+
 
 
     @GetMapping
@@ -72,23 +75,30 @@ public class StudentAdminController {
         return ResponseEntity.ok().body(studentResponseList);
     }
 
-//    @PostMapping
-//    public ResponseEntity<?> create(@RequestBody UserDTO userDTO) {
-//        try {
-//            Set<Role> roles = userDTO.getRoles().stream().map(roleName -> {
-//                Role role = roleRepository.findByName("ROLE_" + roleName);
-//                return role;
-//            }).collect(Collectors.toSet());
-//            User user = modelMapper.map(userDTO, User.class);
-//            user.setRoles(roles);
-//
-//            userService.createUser(user);
-//            return ResponseEntity.status(HttpStatus.CREATED).body("Success");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
-//        }
-//    }
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody UserDTO userDTO) {
+        try {
+            Role role = roleService.findByName("ROLE_USER");
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+
+            User user = modelMapper.map(userDTO, User.class);
+            user.setRoles(roles);
+
+            Student student = new Student();
+            student.setUser(user);
+            student.setTotalCourseRegistered(0L);
+            student.setTotalAmountPaid(0L);
+
+            user.setStudent(student);
+            userService.createUser(user);
+            studentRepository.save(student);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
+        }
+    }
 
     @PatchMapping
     public ResponseEntity<?> update(@RequestBody StudentDTO studentDTO) {
