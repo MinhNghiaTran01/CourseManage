@@ -22,5 +22,4 @@ public class WebSocketSTOMPConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
-
 }

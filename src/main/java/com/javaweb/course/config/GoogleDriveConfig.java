@@ -25,16 +25,16 @@ public class GoogleDriveConfig {
 
     @Bean
     public Drive googleDriveService() throws IOException {
-        // Load Service Account JSON from static folder
+
         Resource resource = resourceLoader.getResource("classpath:static/service_account.json");
         InputStream serviceAccountStream = resource.getInputStream();
 
-        // Load credentials and set scope
+
         GoogleCredentials credentials = GoogleCredentials
                 .fromStream(serviceAccountStream)
                 .createScoped(Collections.singletonList(DriveScopes.DRIVE));
 //                .createDelegated("tranminhnghia19061993x@gmail.com"); // Thay bằng email tài khoản chính
-        // Return Google Drive client
+
         return new Drive.Builder(
                 new com.google.api.client.http.javanet.NetHttpTransport(),
                 new GsonFactory(),

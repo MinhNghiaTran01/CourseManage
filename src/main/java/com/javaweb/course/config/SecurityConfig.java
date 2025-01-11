@@ -65,14 +65,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http = http.authorizeRequests()
-                .antMatchers("/user/auth/**", "/oauth/**"
+                .antMatchers("/user/auth/**"
                         , "/ws/**","/home","/user/upload/avatar").permitAll()
                 .antMatchers("/user/**").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
                 .antMatchers("/v1/**").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated().and();
-//                .antMatchers("*").permitAll().and();
 
-        // Set unauthorized requests exception handler
+
         http = http
                 .exceptionHandling()
                 .authenticationEntryPoint(
