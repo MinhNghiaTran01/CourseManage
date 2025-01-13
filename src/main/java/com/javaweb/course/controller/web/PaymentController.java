@@ -88,7 +88,7 @@ public class PaymentController {
                     .transactionId(paymentVnpay.getTransactionId())
                     .build();
         }).collect(Collectors.toList());
-
+        System.out.println("ok");
         return ResponseEntity.status(HttpStatus.OK).body(paymentVnpayDTOs);
     }
 }
