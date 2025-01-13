@@ -1,0 +1,36 @@
+package com.javaweb.course.model.dto;
+
+import com.javaweb.course.enums.State;
+import lombok.Data;
+
+@Data
+public class LessonDto {
+
+    private Integer id;
+
+    private String lessonName;
+
+    private String description;
+
+    private State state;
+
+    private String duration;
+
+    private Integer courseId;
+
+    private Integer lessonCategoryId;
+
+    private String fileId;
+
+
+    public LessonDto(String lessonName, String description, State state, String duration,
+                     Integer courseId, Integer lessonCategoryId, String fileId) {
+        this.lessonName = lessonName;
+        this.description = description;
+        this.state = state;
+        this.duration = duration;
+        this.courseId = courseId;
+        this.lessonCategoryId = lessonCategoryId;
+        this.fileId = fileId;
+    }
+}
